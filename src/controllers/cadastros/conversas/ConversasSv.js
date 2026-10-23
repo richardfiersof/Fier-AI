@@ -214,7 +214,7 @@ async function rodarIA(content) {
     
     // Altere "llama3" pelo modelo que você baixou no Docker da Hostinger
     const response = await ollama.chat({
-      model: 'llama3', 
+      model: 'ollama', 
       messages: [{ role: 'user', content }],
     });
     return response.message.content
