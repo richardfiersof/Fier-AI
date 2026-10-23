@@ -1,0 +1,13 @@
+
+<%_ if (!locals.filterCol) { _%>
+<div class="col-auto">
+<%_ } _%>
+  <%_ if(locals.canFilterStatus) {_%>
+  <button type="button" id="btnMainFilterStatus" class="btn btn-sm btn-dark m-1" title="Filtrar por status" > <i class="fa fa-check " aria-hidden="true"></i> 
+    <span id="filterStatusText">Mostrar todos</span>
+  </button>   
+  <%_ } _%>
+  <button type="button" id="btnMainFilter" class="btn btn-sm btn-dark m-1"> <i class="fa fa-eye " aria-hidden="true"></i> Filtro</button>    
+<%_ if (!locals.filterCol) { _%>
+</div>
+<%_ } _%>

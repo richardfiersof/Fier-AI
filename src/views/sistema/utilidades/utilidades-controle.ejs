@@ -1,0 +1,36 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../partials/headers/end-header.ejs") _%>
+<%- include("../../partials/navbar.ejs") _%>
+<%- include("../../partials/card/start-card.ejs")_%>
+</div>
+<div class="col-auto">
+  <button type="button" class="btn btn-sm btn-primary m-1" onclick="window.location.reload()">
+    <icon class="fa fa-refresh"></icon> Atualizar
+  </button>
+    </div>
+    </div>
+    </div>
+    <div class="card-body">
+      <table class="table table-sm table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Usuário</th>
+            <th>Data</th>
+            <th>Última ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%- dataTable _%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<%- include('../../partials/jsinclude.ejs') _%>
+
+<script src="/js/base.cli.js" defer></script>
+
+<%- include('../../partials/footer.ejs') _%>

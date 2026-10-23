@@ -1,0 +1,269 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%#- include("../../partials/headers/import-padrao-header.ejs") _%>
+<link rel="stylesheet" href="/css/vendors/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="/css/vendors/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/vendors/tabulator/tabulator_modern.min.css">
+<style>
+  *{
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+  }
+  
+  table, th, td {
+    border:1px solid black;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  table.wide{
+    width: 100%;
+  }
+
+  th{
+    background-color: rgb(35, 82, 236) !important;
+    color: white;
+  }
+
+  .striped > thead,tbody > tr > th,td{
+    font-size: 12px;
+  }
+
+  .striped > tbody > tr > td{
+    font-size: 11px;
+  }
+
+  .centro{
+    text-align: center;
+  }
+
+  .inline{
+    display: inline-flex;
+  }
+
+  .chart{
+    border: 1px solid gray;
+    border-radius: 25px;
+  }
+
+  .text_larger{
+    font-size: 16px;
+  }
+
+  .erro{
+    color: red;
+  }
+
+  .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+
+  .button4 {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7e7e7;
+  }
+
+  .button4:hover {
+    background-color: #e7e7e7;
+  }
+
+  @media print {
+    .button4 {
+      display: none;
+    }
+  }
+
+</style>
+<%- include("../../partials/headers/end-header.ejs") _%>
+
+<main class="container-fluid">
+  <div class="row text-center m-0 py-1">
+    <div class="border border-dark col-auto"><img src="/images/logoImpressao.png" style="height: 60px;"></div>
+    <div class="border-top border-bottom border-dark fs-5 col"><%= sysTitle _%> <br> Período: <%= moment(dataInicial).format("DD/MM/YYYY") %> - <%= moment(dataFinal).format("DD/MM/YYYY") _%></div>
+    <div class="border border-dark col-auto p-1"><%= moment().format("DD/MM/YYYY") _%><br><%= moment().format("HH:mm") _%></div>
+  </div>
+  <table class="table table-sm table-bordered border-dark">
+    <thead>
+      <tr>
+        <th>Máquina</th>
+        <th>Horas Paradas</th>
+        <th>Nº Paradas</th>
+        <th>Grupo</th>
+        <th>Tempo Parado</th>
+        <th>Nº Falhas</th>
+        <th>MTBF/H</th>
+        <th>MTTR/H</th>
+        <th style="font-size: 11px">Confiabilidade</th>
+        <th style="font-size: 11px">Disponibilidade</th>
+      </tr>
+    </thead>
+    <tbody>
+    <%_ let totalCC = 0 _%>
+    <%_ let totalParadas = 0 _%>
+    <%_ let totalMTBF = 0 _%>
+    <%_ let totalMTTR = 0 _%>
+    <%_ let totalConfi = 0 _%>
+    <%_ let totalDisp = 0 _%>
+    <%_  for (const data of mainData) { _%>   
+      <%_ totalParadas += data.maqTotalFalhas _%>
+      <%_ totalMTBF += parseFloat(data.maqMTBF) _%>
+      <%_ totalMTTR += parseFloat(data.maqMTTR) _%>
+      <%_ totalConfi += parseFloat(data.maqConfiabilidade) _%>
+      <%_ totalDisp += parseInt(data.maqDisponibilidade) _%>
+      <%_ totalCC += parseFloat(data.maqTotalParadaCC) _%>
+      <%_ let limitador = 0 _%>
+      <%_ for (const maq of data.maquinas) { _%>
+      <tr>
+        <td ><%= maq.maqIdentif _%></td>
+        <td class="centro"><%= maq.maqParadaHH _%></td>
+        <td class="centro"><%= maq.maqFalhas _%></td>
+        <%_ if(limitador === 0){ _%>
+          <td class="centro align-middle" rowspan="<%= data.maquinas.length _%>"><%= data.maqModelo _%></td>
+          <td class="centro align-middle" rowspan="<%= data.maquinas.length _%>"><%= formatarNumero(data.maqTotalParadaCC) _%></td>
+          <td class="centro align-middle" rowspan="<%= data.maquinas.length _%>"><%= formatarNumero(data.maqTotalFalhas) _%></td>
+          <td class="centro align-middle" rowspan="<%= data.maquinas.length _%>"><%= formatarNumero(data.maqMTBF) _%></td>
+          <td class="centro align-middle" rowspan="<%= data.maquinas.length _%>"><%= formatarNumero(data.maqMTTR) _%></td>
+          <td class="centro align-middle" rowspan="<%= data.maquinas.length _%>"><%= formatarNumero(data.maqConfiabilidade) _%></td>
+          <td class="centro align-middle" rowspan="<%= data.maquinas.length _%>"><%= formatarNumero(data.maqDisponibilidade) _%>%</td>
+          <%_ limitador++ _%>
+        <%_ } _%>
+      </tr>
+      <%_}_%>
+    <%_}_%>
+    <tr>
+    <th>Total</th>
+    <th class="centro"><%= totalHH _%></th>
+    <th class="centro"><%= totalParadas _%></th>
+    <th class="centro">Todas</th>
+    <th class="centro"><%= formatarNumero(totalCC) _%></th>
+    <th class="centro"><%= totalParadas _%></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+    </tr>
+    </tbody>
+  </table>
+  <div class="mt-2">
+    <div class="inline">
+      <div class="chart" id="chartMTBF"></div>
+    </div>
+    <div class="inline">
+      <div class="chart" id="chartMTTR"></div>
+    </div>
+    <div class="inline">
+      <div class="chart" id="chartConf"></div>
+    </div>
+    <div class="inline">
+      <div class="chart" id="chartDisp"></div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col">
+      <table class=" table table-sm ">
+        <thead>
+          <tr>
+            <th>Máquina</th>
+            <th>λ</th>
+            <th>T/Dias</th>
+          </tr>
+        </thead>
+        <tbody>
+        <%_ for (const data of mainData) { _%>
+          <tr>
+            <td><%= data.maqModelo _%></td>
+            <td class="centro"><%= data.maqLambda.toFixed(6) _%></td>
+            <td class="centro"><%= Number(data.maqTempoDias * 100).toFixed(0) _%>%</td>
+          </tr>
+        <%_}_%>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <table class=" table table-sm ">
+        <tbody>
+          <tr>
+            <th colspan="2">Filtro</th>
+          </tr>
+          <tr>
+            <td>Máquinas</td>
+            <td><%= maquinasFiltro _%></td>
+          </tr>
+          <tr>
+            <td>Paradas</td>
+            <td><%= andonFiltro _%></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/vendors/apexcharts/apexcharts.js"></script>
+<script src="/js/vendors/apexcharts/apexcharts.min.js"></script>
+<script>
+  const main_data = JSON.parse('<%- JSON.stringify(mainData) _%>')
+  generateChart(main_data,'chartMTBF','maqModelo','maqMTBF','MTBF / HORAS')
+  generateChart(main_data,'chartMTTR','maqModelo','maqMTTR','MTTR / HORAS')
+  generateChart(main_data,'chartConf','maqModelo','maqConfiabilidade','CONFIABILIDADE')
+  generateChart(main_data,'chartDisp','maqModelo','maqDisponibilidade','DISPONIBILIDADE')
+  
+  let data = new Date().toLocaleString('pt-BR')
+  document.getElementById("data").innerHTML = data.split(" ").join("<br>")
+
+  //----------------------------------------------------------------------------------------------
+  function generateChart(data, el, modelo, variavel, title) {
+    try {
+      const valores =[]
+      const modelos =[]
+      for ( const dado of data){
+        if(dado[variavel] != '#Erro'){
+          valores.push(Math.round( (dado[variavel]) *100 ) /100)
+          modelos.push(dado[modelo])
+        }
+      }
+      let options = {
+        chart: {
+          width: 310,
+          type: 'pie',
+        },
+        series : valores,
+        labels : modelos,
+        title: {
+          text: title,
+          align: 'center'
+        },
+        legend: {
+          position: 'bottom'
+        },
+        dataLabels: {
+          formatter: function (val, opts) {
+              return opts.w.config.series[opts.seriesIndex]
+          },
+        },
+
+      }
+      const chart = new ApexCharts(document.getElementById(el), options);
+      chart.render();
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  function fncVoltar(){
+    window.open("/manutencao/relatorios","_self")
+  }
+</script>
+
+<%- include('../../partials/footer.ejs') _%>

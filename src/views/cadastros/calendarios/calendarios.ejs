@@ -1,0 +1,23 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../partials/headers/end-header.ejs") _%>
+<%- include('../../partials/navbar.ejs') _%>
+
+<%- include("../../partials/card/start-card.ejs") _%>
+<%_ if(  locals.canData ) { _%>
+  <button type="button" class="m-1 btn btn-sm btn-secondary" id="btnMainData" title="Dados"> 
+    <icon class="fa fa-"></icon> Dados
+  </button>
+<%_ } _%>
+<%- include("../../partials/card/middle-card.ejs") _%>
+<%- include("../../partials/card/end-card.ejs") _%>
+
+<%- include("../../partials/modal/modal-padrao.ejs", {modalSize:'', modalCols: 'row-cols-1'})_%>
+<%- include("../../partials/modal/modal-delete.ejs" )_%>
+
+<%- include('../../partials/jsinclude.ejs') _%>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/libs/cadastros/calendarios/calendarios.cli.js" defer></script>
+
+<%- include('../../partials/footer.ejs') _%>

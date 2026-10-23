@@ -1,0 +1,28 @@
+
+<div class="modal fade" id="autenticarModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Autenticação</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row row-cols-1">
+          <div class="col">
+            <label for="funcionarioId">Identificador</label>
+            <input id="funcionarioId" type="number" class="form-control form-control-sm" autocomplete="off" focus="autenticarModal">
+          </div>
+          <div class="col">
+            <label for="funcionarioCodigo">Senha</label>
+            <input id="funcionarioCodigo" type="password" class="form-control form-control-sm" autocomplete="off">
+          </div>
+        </div>
+        <div id="modalAvisoOutros"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn col btn-primary btn-sm" id="btnAutenticar">Confirmar</button>
+        <button type="button" class="btn col btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

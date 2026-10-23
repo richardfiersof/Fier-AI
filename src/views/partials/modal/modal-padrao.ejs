@@ -1,0 +1,82 @@
+
+<div class="modal fade" id="mainModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog <%= modalSize %>">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleModal"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="formMainModal">
+          <div class="row <%= modalCols %>">
+          <%_ for (const data of mainForm) { _%>
+            <%_ if ( data.type ==="input") { _%>
+                <%_ if ( data.dataType === "checkbox") { _%>
+                  <div class="col<%= data.row ? '-'+data.row : '' _%>" id="div<%= data.nome _%>">
+                      <div class="form-group custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="<%= data.nome _%>" <%- data.atritubos _%>>
+                        <label class="custom-control-label" for="<%= data.nome _%>"><%= data.titulo _%></label>
+                      </div>
+                  </div>
+                <%_ } else { _%>   
+                  <div class="col<%= data.row ? '-'+data.row : '' _%>" id="div<%= data.nome _%>">
+                      <div class="form-group" >
+                        <label for="<%= data.nome _%>"><%= data.titulo _%></label>
+                        <input type="<%= data.dataType _%>"  class="form-control form-control-sm" id="<%= data.nome _%>" name="<%= data.nome _%>" autocomplete="nope" autocomplete="off" <%- data.atritubos _%>>
+                        <%_ if(  data.atritubos[0] !== undefined){ _%>
+                            <%_ if( data.atritubos[0].includes('list')) {_%>
+                              <datalist id="<%= data.list _%>" name="<%= data.list _%>" autocomplete="nope" autocomplete="off"></datalist>
+                            <%_ } _%>
+                        <%_ } _%>   
+                      </div>
+                  </div>
+                <%_ } _%>   
+            <%_ } else if ( data.type ==="textarea" ){ _%>
+                <div class="col<%= data.row ? '-'+data.row : '-12' _%>" id="div<%= data.nome _%>">
+                  <div class="form-group" >
+                      <label for="<%= data.nome _%>"><%= data.titulo _%></label>
+                      <textarea id="<%= data.nome _%>" name="<%= data.nome _%>" <%- data.atritubos %> class="form-control form-control-sm"></textarea >
+                  </div>
+                </div>
+            <%_ } else if ( data.type ==="select") { _%>
+                <div class="col<%= data.row ? '-'+data.row : '' _%>" id="div<%= data.nome _%>">
+                  <div class="form-group" >
+                      <label for="<%= data.nome _%>"><%= data.titulo _%></label>
+                      <select id="<%= data.nome _%>" class="form-control form-control-sm" name="<%= data.nome _%>" <%- data.atritubos %>>
+                        <%_ if(data.opcoes.length >0) { _%>
+                            <%_ for (const opt of data.opcoes) { _%>
+                              <option value="<%= opt.valor%>" > <%= opt.nome %></option>
+                            <%_ } _%>
+                        <%_ } _%>   
+                      </select>
+                  </div>
+                </div>
+            <%_ } else if ( data.type ==="datalist") { _%>
+                <div class="col<%= data.row ? '-'+data.row : '' _%>" id="div<%= data.nome _%>">
+                  <div class="form-group" >
+                      <label for="<%= data.nome _%>"><%= data.titulo _%></label>
+                      <input id="<%= data.nome _%>" class="form-control form-control-sm" <%- data.atritubos %>>
+                      <datalist id="<%= data.datalist _%>"  name="<%= data.datalist _%>" autocomplete="nope" autocomplete="off">
+                        <%_ if(data.opcoes.length >0) { _%>
+                            <%_ for (const opt of data.opcoes) { _%>
+                              <option value="<%= opt.valor%>" > <%= opt.nome %></option>
+                            <%_ } _%>
+                        <%_ } _%>   
+                      </datalist>
+                  </div>
+                </div>
+            <%_ } _%>
+          <%_ } _%>
+          </div>
+          <div id="modalMainOutros"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn col btn-primary btn-sm" id="btnSalvar">Confirmar</button>
+        <button type="button" class="btn col btn-success btn-sm" id="btnConfirmarContinuar">Salvar e Continuar</button>
+        <button type="button" class="btn col btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

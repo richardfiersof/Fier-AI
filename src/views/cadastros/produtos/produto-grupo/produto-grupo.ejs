@@ -1,0 +1,45 @@
+<%- include("../../../partials/headers/start-header.ejs") _%>
+<%- include("../../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../../partials/headers/end-header.ejs") _%>
+<%- include('../../../partials/navbar.ejs') _%>
+
+<div class="container-fluid mainItem">
+  <div class="card">
+    <div class="alert alert-secondary p-1 m-0" role="alert">
+      <div class="row">
+        <div class="col">
+        <%- include("../../../partials/btns/btn-padrao.ejs") _%>
+        <%_ if( locals.canProduto) { _%>
+        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+          <icon class="fa fa-th-list"></icon>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenu">
+          <%_ if(locals.canProduto) {_%>
+            <li>
+              <button class="dropdown-item" id="btnMainProduto" > 
+                <i class="fa fa-list-ol"></i> Produtos
+              </button>
+            </li>
+          <%_ } _%>
+          </ul>
+        <%_ } _%>
+        </div>
+        <%- include("../../../partials/btns/btn-filter.ejs") _%>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-secondary p-1 m-0">
+    <div id="mainTable"></div>
+  </div>
+</div>
+
+<%- include("../../../partials/modal/modal-padrao.ejs",{ modalSize: '', modalCols: 'row-cols-1'} )_%>
+<%- include("../../../partials/modal/modal-delete.ejs" )_%>
+
+<%- include('../../../partials/jsinclude.ejs') _%>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/libs/cadastros/produtos/produto-grupo/produto-grupo.cli.js" defer></script>
+
+<%- include('../../../partials/footer.ejs') _%>

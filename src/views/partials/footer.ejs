@@ -1,0 +1,16 @@
+	<%_ if (!locals.noFooter) { _%>
+	<footer class="container-fluid mainColors text-light">
+		<div class="row mainColors">
+			<div class="col text-left">
+				&nbsp; © Copyright Fiersof
+			</div>
+			<%_ if(locals.usNome != undefined){ _%>
+				<div class="col">
+					<div id="userNameFooter" style="float: right;"><%= usNome _%></div>
+				</div>
+			<%_ } _%>
+		</div>
+	</footer>
+	<%_ } _%>
+</body>
+</html>

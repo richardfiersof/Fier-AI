@@ -1,0 +1,69 @@
+<%- include('../../partials/headers/start-header.ejs') _%>
+<%- include('../../partials/headers/import-padrao-header.ejs') _%>
+<%- include('../../partials/headers/end-header.ejs') _%>
+<%- include('../../partials/navbar.ejs') _%>
+
+<%- include("../../partials/card/start-card.ejs") _%>
+    </div>
+    </div>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-secondary p-1">
+        <div class="bg-light p-1">
+          <h5>Imagens para:</h5>
+          <div class="p-1 row">
+          <%_ for ( const btns of mainBtns ) { _%>
+            <div class="row mt-1">
+              <%_ for ( const btn of btns ) { _%>
+                <%_ if(btn.element === 'label') { _%>
+                  <div class="col-3 mt-1">
+                    <label for="<%= btn.for _%>"><%= btn.title _%></label>
+                  </div>
+                <%_ } else if(btn.element === 'input') { _%>
+                  <div class="col">
+                    <input type="<%= btn.type _%>"  class="<%= btn.class _%>" id="<%= btn.id _%>" accept="<%= btn.others _%>" >
+                  </div>
+                <%_ } else if(btn.element === 'button') { _%>
+                  <div class="col-auto">
+                    <button type="<%= btn.type _%>" class="<%= btn.class _%>" id="<%= btn.id _%>" ><%= btn.title _%></button>
+                  </div>
+                <%_ } _%>
+              <%_ } _%>
+            </div>
+          <%_ } _%>
+          </div>
+          <br>
+            <h5>Configurações de email:</h5>
+            <div class="p-1 row" id="emailbody"> </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="showModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Visualizar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="p-2 text-center" id="bodyModal">
+          <img id="imageLogo">
+        </div>
+      </div>
+      <div class="modal-footer mt-2">
+        <button type="button" class="btn col btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/jsinclude.ejs') _%>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/libs/sistema/config/config.cli.js" defer></script>
+
+<%- include('../../partials/footer.ejs') _%>

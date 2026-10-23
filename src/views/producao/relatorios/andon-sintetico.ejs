@@ -1,0 +1,50 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<style>
+  body{
+    background-color: white !important;
+  }
+</style>
+<%- include("../../partials/headers/end-header.ejs") _%>
+
+<main class="container-fluid">
+  <div class="row text-center m-0 py-1">
+    <div class="border border-dark col-auto"><img src="/images/logoImpressao.png" style="height: 60px;"></div>
+    <div class="border-top border-bottom border-dark fs-5 col"><%= sysTitle _%> <br> Período: <%= moment(dataInicial).format("DD/MM/YYYY") %> - <%= moment(dataFinal).format("DD/MM/YYYY") _%></div>
+    <div class="border border-dark col-auto p-1"><%= moment().format("DD/MM/YYYY") _%><br><%= moment().format("HH:mm") _%></div>
+  </div>
+  
+  <table class="table table-sm table-bordered border-dark">
+    <thead>
+      <tr>
+        <th>Máquina</th>
+        <%_ for ( const defeito of mainData.defeitos ) { _%>
+          <th><%= defeito.nome _%></th>
+        <%_ } _%>
+        <th class="text-end">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%_ for ( const maquina of mainData.maquinas ) { _%>
+        <tr>
+          <td><%= maquina.nome _%></td>
+          <%_ for ( const { nome } of mainData.defeitos ) { _%>
+            <td class="text-end"><%= maquina.defeitos.find(x=> x.defeitoNome == nome)?.formatado _%></td>
+          <%_ } _%>
+          <td class="text-end"><%= maquina.total _%></td>
+        </tr>
+      <%_ } _%>
+      <tr>
+        <th>Total</th>
+        <%_ for ( const defeito of mainData.defeitos ) { _%>
+          <th class="text-end"><%= defeito.formatado _%></th>
+        <%_ } _%>
+        <th class="text-end"><%= mainData.totalGeral _%></th>
+      </tr>
+    </tbody>
+  </table>
+</main>
+
+<script src="/js/base.cli.js" defer></script>
+
+<%- include('../../partials/footer.ejs') _%>

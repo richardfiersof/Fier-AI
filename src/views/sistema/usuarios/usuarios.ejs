@@ -1,0 +1,35 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../partials/headers/end-header.ejs") _%>
+<%- include("../../partials/navbar.ejs") _%>
+
+<%- include("../../partials/card/start-card.ejs") _%>
+<%_ if( locals.canAcesso || locals.canReset ) { _%>
+  <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+    <icon class="fa fa-th-list"></icon>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenu">
+  <%_ if(locals.canAcesso) { _%>
+    <li>
+      <button class="dropdown-item" id="btnMainAcessos"><icon class="fa fa-list"></icon> Acessos</button>
+    </li>
+  <%_ } _%>
+  <%_ if(locals.canReset ) { _%>
+    <li>
+      <button class="dropdown-item" id="btnMainResetPws"><icon class="fa fa-key"></icon> Resetar Senha</button>
+    </li>
+  <%_ } _%>
+  </ul>
+<%_ } _%>
+<%- include("../../partials/card/middle-card.ejs") _%>
+<%- include("../../partials/card/end-card.ejs") _%>
+
+<%- include("../../partials/modal/modal-padrao.ejs", {modalSize:'modal-lg',modalCols: 'row-cols-2'})_%>
+<%- include("../../partials/modal/modal-aviso.ejs")_%>
+
+<%- include('../../partials/jsinclude.ejs') _%>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/libs/sistema/usuarios/usuarios.cli.js" defer></script>
+
+<%- include('../../partials/footer.ejs') _%>

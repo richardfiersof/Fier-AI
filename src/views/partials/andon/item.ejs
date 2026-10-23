@@ -1,0 +1,36 @@
+<div id="maquina<%= maquinaId _%>" data-item-id="<%= maquinaId _%>">
+  <%_ if (locals.andon) {_%>
+  <div class="card user-select-none andonCard autoColors m-0" style="--cor-fundo: <%= andon?.andonTiposCor ?? 'transparent' _%>;--cor-fonte: <%= andon?.andonTiposCorFonte ?? 'inherit' _%>;">
+    <div class="card-header andonHeader p-1">
+      <div class="d-flex justify-content-between">
+        <div><%= andon.andonTiposDescricao _%></div>
+        <button class="btn btn-sm autoColors" type="button" title="Voltar máquina" onclick="fncAutenticarFuncionario('<%= maquinaId _%>','update')" style="--cor-fundo: <%= andon?.andonTiposBotaoCor ?? 'transparent' _%>;--cor-fonte: <%= andon?.andonTiposBotaoCorFonte ?? 'inherit' _%>;">
+          <icon class="fa fa-refresh"></icon>
+        </button>
+      </div>
+    </div>
+    <div class="card-body andonBodyStatus p-1"><%= maquinaIdentificacao _%></div>
+    <div class="card-footer andonFooter p-1">
+      <div class="d-flex justify-content-between">
+        <div>Inicio: <span class="andonDataInicial" id="cronometroInicio<%= maquinaId _%>"><%= moment(parada.maquinaParadaDataInicial).format("DD/MM/YYYY") %> <%= parada.maquinaParadaHoraInicial _%></span></div>
+        <div>Atual: <span id="cronometro<%= maquinaId _%>">carregando...</span></div>
+      </div>
+    </div>
+  </div>
+  <%_ } else  { _%>
+    <div class="card user-select-none andonCard <%= maquinaStatus == "Operando" ? "bg-success" : "bg-secondary" %> text-light m-0">
+      <div class="card-header andonHeader p-1">
+        <div class="d-flex justify-content-between">
+          <div><%= maquinaStatus _%></div>
+          <%_ if (maquinaStatus == "Operando") { _%>
+          <button class="btn btn-sm btn-dark" type="button" title="Parar máquina" onclick="fncAutenticarFuncionario('<%= maquinaId _%>','new')">
+            <icon class="fa fa-pause"></icon>
+          </button>
+          <%_ } _%>
+        </div>
+      </div>
+      <div class="card-body andonBodyStatus p-1"><%= maquinaIdentificacao _%></div>
+    </div>
+  <%_ } _%>
+  <div class="calendarioItem <%= calendario.calendariosId _%>" horafinal="<%= calendarioData?.calendarioDadosTermino _%>" dado="<%= calendarioData?.calendarioDadosId _%>" hidden></div>
+</div>

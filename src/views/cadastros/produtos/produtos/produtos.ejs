@@ -1,0 +1,55 @@
+<%- include("../../../partials/headers/start-header.ejs") _%>
+<%- include("../../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../../partials/headers/end-header.ejs") _%>
+<%- include('../../../partials/navbar.ejs') _%>
+
+<div class="container-fluid mainItem">
+  <div class="card">
+    <div class="alert alert-secondary p-1 m-0" role="alert">
+      <div class="row">
+        <div class="col">
+        <%- include("../../../partials/btns/btn-padrao.ejs") _%>
+        <%_ if( locals.canExcel  ) { _%>
+        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+          <icon class="fa fa-th-list"></icon>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenu">
+        <%_ if(locals.canExcel) { _%>
+          <li>
+            <button class="dropdown-item" id="btnMainExcel">
+              <i class="fa fa-file-excel-o" aria-hidden="true"></i> Importar dados via excel 
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" id="btnMainExcelDescricao">
+              <i class="fa fa-file-excel-o" aria-hidden="true"></i> Alterar descrição via excel 
+            </button>
+          </li>
+        <%_ } _%>
+        </ul>
+        <%_ } _%>
+        </div>
+        <%- include("../../../partials/btns/btn-filter.ejs") _%>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-secondary p-1 m-0">
+    <div id="mainTable"></div>
+  </div>
+</div>
+
+<%- include("../../../partials/modal/modal-padrao.ejs",{ modalSize: 'modal-lg', modalCols: 'row-cols-2'} )_%>
+<%- include("../../../partials/modal/modal-delete.ejs" )_%>
+<%_ for( const obj of modalInfo) { _%>
+  <%_ if(obj.render === 0) { continue }_%>
+  <%_ const fileName = '../../../partials/modal/'+obj.modalType +'.ejs' _%>
+  <%- include(fileName, obj) _%>
+<%_ } _%>
+
+<%- include('../../../partials/jsinclude.ejs') _%>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/libs/cadastros/produtos/produtos/produtos.cli.js" defer></script>
+
+<%- include('../../../partials/footer.ejs') _%>

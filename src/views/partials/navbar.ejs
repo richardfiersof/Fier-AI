@@ -1,0 +1,104 @@
+﻿<div class="container-fluid">
+
+  <nav class="navbar navbar-expand-lg mainColors">
+    <a class="navbar-brand text-center text-white homeIcon" href="/">
+      <i class="fa fa-home fa-2x" aria-hidden="true"></i>
+    </a>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+
+      <%_ if( acessos.includes("0001-0000-0000-0000") ){ _%>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" 
+            href="#" id="cadastro_dropdown" 
+            role="button" 
+            data-bs-toggle="dropdown" 
+            data-bs-auto-close="outside"
+            aria-expanded="false">
+            Cadastros
+          </a>
+          <ul class="dropdown-menu mainColors" aria-labelledby="cadastro_dropdown">
+          <%_ if( acessos.includes("0001-0001-0000-0001") ){ _%>
+            <li class="mainColors">
+              <a class="dropdown-item" href="/cadastro/conversas/">Conversas</a>
+            </li>
+          <%_ } _%>
+          </ul>
+        </li>
+      <%_ } _%>
+
+      <%_ if( isAdm ){ _%>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" 
+              href="#" id="navbarDropdownMenuLink" 
+              role="button" 
+              data-bs-toggle="dropdown" 
+              aria-expanded="false">
+              Administrador
+          </a>
+          
+          <ul class="dropdown-menu mainColors" aria-labelledby="navbarDropdownMenuLink">
+              <%_ if( acessos.includes("9000-0002-0000-0001") ){ _%>
+                <li class="mainColors">
+                  <a class="dropdown-item" href="/sistema/usuarios/">Usuários</a>
+                </li>
+              <%_ } _%>
+              <li class="mainColors">
+                <a class="dropdown-item" href="/sistema/configuracoes/">Configurações</a>
+              </li>
+              <li class="mainColors">
+                <%_ if( acessos.includes("9000-0003-0000-0001") ){ _%>
+              </li>
+                <li class="mainColors">
+                  <a class="dropdown-item" href="/sistema/logs/">Log eventos</a>
+                </li>
+              <%_ } _%>
+              <li class="mainColors">
+                <a class="dropdown-item" href="/sistema/controle/usuarios/online/">Usuários on-line</a>
+              </li>
+          </ul>
+        </li>
+      <%_ } _%>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" 
+            href="#" id="navbarDropdownMenuLink" 
+            role="button" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false">
+            Preferências
+          </a>
+          
+          <ul class="dropdown-menu mainColors" aria-labelledby="navbarDropdownMenuLink">
+            <li class="mainColors">
+              <a class="dropdown-item" href="/alterar/senha/">Alterar Senha</a>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+    
+    <nav class="navbar navbar-light ">
+      <div class="container-fluid">
+        <button class="navbar-toggler"
+        type="button" data-bs-toggle="collapse" 
+        data-bs-target="#navbarNavDropdown" 
+        aria-controls="navbarNavDropdown" 
+        aria-expanded="false" 
+        aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <a href="/sair" 
+      class="btn btn-outline-light m-1" 
+      role="button" 
+      aria-pressed="true" 
+      title="Sair">
+      <i class="fa fa-sign-out" aria-hidden="true"></i>
+    </a>
+    
+  </nav>
+</div>

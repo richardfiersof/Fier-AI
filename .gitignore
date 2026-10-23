@@ -1,0 +1,9 @@
+node_modules
+src/safe-files
+
+.env
+.sequelizerc
+.node_modules
+.bat
+.git
+git

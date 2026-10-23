@@ -1,0 +1,147 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%#- include("../../partials/headers/import-padrao-header.ejs") _%>
+<link rel="stylesheet" href="/css/vendors/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" href="/css/vendors/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/vendors/tabulator/tabulator_modern.min.css">
+<style>
+  *{
+    font-family:Verdana, Geneva, Tahoma, sans-serif
+  }
+  
+  table, th, td {
+    border:1px solid black;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  table.wide{
+    width: 100%;
+  }
+
+  th{
+    background-color: rgb(35, 82, 236) !important;
+    color: white;
+  }
+
+  .striped > thead,tbody > tr > th,td{
+    font-size: 12px;
+  }
+
+  .striped > tbody > tr > td{
+    font-size: 11px;
+  }
+
+  .centro{
+    text-align: center;
+  }
+
+  .inline{
+    display: inline-flex;
+  }
+
+  .chart{
+    border: 1px solid gray;
+    border-radius: 25px;
+  }
+
+  .text_larger{
+    font-size: 16px;
+  }
+
+  .erro{
+    color: red;
+  }
+
+  .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+  }
+
+  .button4 {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7e7e7;
+  }
+
+  .button4:hover {
+    background-color: #e7e7e7;
+  }
+
+  @media print {
+    .button4 {
+      display: none;
+    }
+  }
+
+</style>
+<%- include("../../partials/headers/end-header.ejs") _%>
+
+<main class="container-fluid">
+  <div class="row text-center m-0 py-1">
+    <div class="border border-dark col-auto"><img src="/images/logoImpressao.png" style="height: 60px;"></div>
+    <div class="border-top border-bottom border-dark fs-5 col"><%= sysTitle _%> <br> Período: <%= moment(dataInicial).format("DD/MM/YYYY") %> - <%= moment(dataFinal).format("DD/MM/YYYY") _%></div>
+    <div class="border border-dark col-auto p-1"><%= moment().format("DD/MM/YYYY") _%><br><%= moment().format("HH:mm") _%></div>
+  </div>
+  
+  <table class="table table-sm table-bordered border-dark">
+    <thead>
+      <tr>
+        <th>Máquina</th>
+        <th>Horas Paradas</th>
+        <th>Nº Paradas</th>
+        <th>Tempo Parado</th>
+        <th>MTBF/H</th>
+        <th>MTTR/H</th>
+        <th style="font-size: 12px">Confiabilidade</th>
+        <th style="font-size: 12px">Disponibilidade</th>
+        <th>λ</th>
+      </tr>
+    </thead>
+    <tbody>
+    <%_ for (const data of mainData) { _%>
+      <%_ for (const maq of data.maquinas) { _%>
+        <tr>
+          <td ><%= maq.maqIdentif _%></td>
+          <td class="centro"> <%= maq.maqParadaHH _%></td>
+          <td class="centro"> <%= maq.maqFalhas _%></td>
+          <td class="centro"> <%= formatarNumero(maq.maqParadaCE) _%></td>
+          <td class="centro"> <%= formatarNumero(maq.maqMTBF) _%></td>
+          <td class="centro"> <%= formatarNumero(maq.maqMTTR) _%></td>
+          <td class="centro"> <%= formatarNumero(maq.maqConfiabilidade)_%></td>
+          <td class="centro"> <%= formatarNumero(maq.maqDisponibilidade) _%>%_%></td>
+          <td class="centro"> <%= maq.maqLambda.toFixed(6) _%></td>
+        </tr>
+      <%_}_%>
+    <%_}_%>
+    </tbody>
+  </table>
+
+  <table class="table table-sm mt-2">
+    <tbody>
+      <tr>
+        <th colspan="2">Filtro</th>
+      </tr>
+      <tr>
+        <td>Máquinas</td>
+        <td><%= maquinasFiltro _%></td>
+      </tr>
+      <tr>
+        <td>Paradas</td>
+        <td><%= andonFiltro _%></td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+
+<script src="/js/base.cli.js" defer></script>
+
+<%- include('../../partials/footer.ejs') _%>

@@ -1,0 +1,74 @@
+<%- include("../../../partials/headers/start-header.ejs") _%>
+<%- include("../../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../../partials/headers/end-header.ejs") _%>
+
+<div class="container" style="display: flex; flex-direction: row; justify-content: center; align-items: center">
+   <br>
+   <div style="width: 400px;height: 400px; margin-top: 30px;">
+      <div class="card">
+         <div class="card-header" style="text-align: center;">
+            <h3>
+               Cadastro
+            </h3>
+         </div>
+
+         <div class="card-body">
+            <input type="hidden" id="msgToUser" value="<%= locals.msgToUser %>">
+            
+            <form id="formlogin" method="POST" action="/primeiro-usuario" >
+               <div class="form-group">
+                  <label for="login">Nome/Login</label>
+                  <input type="text" class="form-control" id="login" name="login" required autofocus >
+               </div>
+
+               <div class="form-group">
+                  <label for="nome">Nome Completo</label>
+                  <input type="text" class="form-control" id="nome" name="nome" required >
+               </div>
+
+               <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" class="form-control" id="email" name="email" required >
+               </div>
+
+               <div class="form-group">
+                  <label for="senha">Senha</label>
+                  <input type="password" class="form-control" id="senha" name="senha" minlength="8" required >
+               </div>
+               <div class="form-group">
+                  <label for="senhaConfirmacao">Confirmação Senha</label>
+                  <input type="password" class="form-control" id="senhaConfirmacao" name="senhaConfirmacao" minlength="8" required >
+               </div>
+               <small class="from-text text-muted" >A senha deve conter: ao menos 8 carácteres, letras maiúsculas, minusculas, números e carácteres especiais!</small>
+
+               <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-block btn-primary mt-4" id="enviar">Confirmar </button>
+                  <a href="/login" class="btn btn-secondary"> Voltar </a>
+               </div>
+            </form>
+
+            <div class="text-center" id="aguardando" style="display: none;">
+               <div class="spinner-grow text-primary" role="status">
+                  <span class="sr-only">.</span>
+               </div>
+               <div class="spinner-grow text-secondary" role="status">
+                  <span class="sr-only">.</span>
+               </div>
+            </div>
+
+            <br>
+            <div class="alert alert-danger mt-2" role="alert" id="errorMsg" style="display: none;"></div>
+
+         </div>
+         
+      </div>
+   </div>
+</div>
+     
+
+<%- include("../../../partials/jsinclude.ejs") %>
+
+<script src="/js/base.cli.js"> </script>
+<script src="/js/libs/sistema/usuarios/novo.cli.js"> </script>
+
+<%- include("../../../partials/footer.ejs") %>

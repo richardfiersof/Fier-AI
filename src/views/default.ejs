@@ -1,0 +1,34 @@
+<%- include("./partials/headers/start-header.ejs") _%>
+<%- include("./partials/headers/import-padrao-header.ejs") _%>
+<%- include("./partials/headers/end-header.ejs") _%>
+<%- include("./partials/navbar.ejs") _%>
+
+<div class="container-fluid mainItem">
+  <div class="card">
+    <div class="alert alert-secondary p-1 m-0" role="alert">
+      <div class="row">
+        <div class="col">
+          <%- include("./partials/btns/btn-padrao.ejs") _%>
+        </div>
+        <%- include("./partials/btns/btn-filter.ejs") _%>
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-secondary p-1 m-0">
+    <div id="mainTable"></div>
+  </div>
+</div>
+
+<%- include("./partials/modal/modal-padrao.ejs", {modalSize:'',modalCols: 'row-cols-1'})_%>
+<%- include("./partials/modal/modal-aviso.ejs")_%>
+<%- include("./partials/modal/modal-delete.ejs")_%>
+
+<input type="number" value="<%= selectedId _%>" id="selectedId" hidden>
+<input type="text" value="<%= mainId _%>" id="mainId" hidden>
+
+<%- include("./partials/jsinclude.ejs") _%>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/libs/default.js" defer></script>
+
+<%- include("./partials/footer.ejs") _%>

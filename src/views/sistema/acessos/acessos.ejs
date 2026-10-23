@@ -1,0 +1,115 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../partials/headers/end-header.ejs") _%>
+<%- include("../../partials/navbar.ejs") _%>
+
+<div class="container-fluid mainItem">
+  <div class="card">
+    <div class="card-header">
+      <button type="button" class="btn btn-sm btn-outline-dark">Acessos do Usuario</button>
+      <a href="/sistema/usuarios?selected=<%= usId _%>" class="btn btn-sm btn-secondary">Voltar</a>
+      <button class="btn btn-success btn-sm" id="btnUnblock">Liberar Todos</button>
+      <button class="btn btn-danger btn-sm" id="btnBlock">Bloquear Todos</button>
+    </div>
+    <div class="card-body">
+      <div class="row d-flex justify-content-center">
+        <%_ const sistema = mainData.filter(x=> x.estruturaCodigo.slice(0,4) == '9000') _%>
+        <%_ for( const nav of navs) { _%>
+          <%_ const navItens = mainData.filter(x=> x.estrutura.estruturaTipo != 'nav' && x.estruturaCodigo.slice(0,4) == nav.estruturaCodigo.slice(0,4)) _%>
+          <div class="col-12 border border-1 rounded border-secondary shadow m-2 p-2">
+            <div class="row">
+              <div class="col form-check form-switch">
+                <input type="checkbox" class="form-check-input acessoUnico m-1" id="<%= nav.estruturaCodigo%>" <%_ if( nav.acessoLiberado == 1) { _%>checked<%_ } _%>>
+                <label class="form-check-label" for="<%= nav.estruturaCodigo %>"> 
+                  <%= nav.estrutura.estruturaNome.replace(':','')  _%>
+                </label>
+              </div>
+              <div class="col-auto">
+                <button type="button" class="btn btn-sm btn-outline-dark btnPai" name="<%= nav.estruturaCodigo.slice(0,4) _%>" >Mostrar/Esconder</button>
+              </div>
+            </div>
+          </div>
+          <div class="col mb-4" id="filho<%= nav.estruturaCodigo.slice(0,4) _%>">
+            <div class="row d-flex">
+            <%_ for ( const data of navItens) { _%>
+              <%_ if( data.estrutura.estruturaTipo == 'menu' && data.estrutura.estruturaAtivo == 1) { _%>
+                <div class="col-auto border border-1 rounded border-secondary shadow m-1 p-2"  style="min-width: 23vw;">
+                  <div class="form-check form-switch">
+                    <input type="checkbox" class="form-check-input acessoUnico" id="<%= data.estruturaCodigo%>" <%_ if( data.acessoLiberado == 1) { _%>checked<%_ } _%>>
+                    <label class="form-check-label" for="<%= data.estruturaCodigo %>"> 
+                      <%= data.estrutura.estruturaNome.replace(':','')  _%> 
+                    </label>
+                  </div>
+                <%_ for( const data2 of mainData) { _%>
+                  <%_ if( data.estrutura.estruturaCodigo.slice(0,14) === data2.estrutura.estruturaCodigo.slice(0,14) && data2.estrutura.estruturaTipo != 'menu' && data2.estrutura.estruturaAtivo == 1) { _%>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-check form-switch">
+                        <input type="checkbox" class="form-check-input acessoUnico" id="<%= data2.estruturaCodigo%>" <%_ if( data2.acessoLiberado == 1) { _%>checked<%_ } _%>>
+                          <label class="form-check-label" for="<%= data2.estruturaCodigo %>"> 
+                            <%= data2.estrutura.estruturaNome.replace(data.estrutura.estruturaNome, '').replace(':','')  _%> 
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  <%_ } _%>
+                <%_ } _%>
+                </div>
+              <%_ } _%>
+            <%_ } _%>
+            </div>
+          </div>
+      <%_ } _%>
+        <div class="col-12 border border-1 rounded border-secondary shadow m-2 p-2">
+          <div class="row">
+            <div class="form col">
+              <label class="form-label m-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sistema </label>
+            </div>
+            <div class="col-auto">
+              <button type="button" class="btn btn-sm btn-outline-dark btnPai" name="9000" >Mostrar/Esconder</button>
+            </div>
+          </div>
+        </div>
+        <div class="col" id="filho9000">
+          <div class="row">
+          <%_ for ( const data of sistema) { _%>
+            <%_ if( data.estrutura.estruturaTipo == 'menu' && data.estrutura.estruturaAtivo == 1) { _%>
+              <div class="col border border-1 rounded border-secondary shadow m-2 p-2">
+                <div class="form-check form-switch">
+                  <input type="checkbox" class="form-check-input acessoUnico" id="<%= data.estruturaCodigo%>" <%_ if( data.acessoLiberado == 1) { _%>checked<%_ } _%>>
+                  <label class="form-check-label" for="<%= data.estruturaCodigo %>"> 
+                    <%= data.estrutura.estruturaNome.replace(':','')  _%> 
+                  </label>
+                </div>
+              <%_ for( const data2 of mainData) { _%>
+                <%_ if( data.estrutura.estruturaCodigo.slice(0,14) === data2.estrutura.estruturaCodigo.slice(0,14) && data2.estrutura.estruturaTipo != 'menu' && data2.estrutura.estruturaAtivo == 1) { _%>
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-check form-switch">
+                      <input type="checkbox" class="form-check-input acessoUnico" id="<%= data2.estruturaCodigo%>" <%_ if( data2.acessoLiberado == 1) { _%>checked<%_ } _%>>
+                        <label class="form-check-label" for="<%= data2.estruturaCodigo %>"> 
+                          <%= data2.estrutura.estruturaNome.replace(data.estrutura.estruturaNome, '').replace(':','')  _%> 
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                <%_ } _%>
+              <%_ } _%>
+              </div>
+            <%_ } _%>
+          <%_ } _%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="number" id="usId" value="<%=usId%>" hidden>
+
+<%- include("../../partials/jsinclude.ejs") %>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/libs/sistema/acessos/acessos.cli.js" defer></script>
+
+<%- include("../../partials/footer.ejs") %>

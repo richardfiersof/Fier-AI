@@ -1,0 +1,29 @@
+<div class="modal fade" id="notifyModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Responsáveis a serem notificados</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="configId" hidden disabled>
+        <div class="row">
+          <div class="col">
+            <textarea id="usuariosResponsaveis" class="form-control form-control-sm"></textarea>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col">
+            <small>Emails separados por virgula!</small>
+            <br>
+            <small>Exemplo: exemplo@mail.com, exemplo2@mail.com</small>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn col btn-primary btn-sm" id="btnNotifySave">Confirmar</button>
+        <button type="button" class="btn col btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

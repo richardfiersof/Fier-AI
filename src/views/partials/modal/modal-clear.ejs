@@ -1,0 +1,22 @@
+<div class="modal fade" id="<%= modalId _%>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog <%= modalSize %>"  id="<%= modalId _%>Size">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><%= modalTitle _%></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form<%= modalId _%>">
+          <div id="<%= modalData _%>"></div>
+          <div id="modal<%= modalId _%>Outros"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <%_ if(modalBtn != null || modalBtn != undefined){ _%>
+          <button type="button" class="btn col btn-primary btn-sm" id="<%= modalBtn _%>">Confirmar</button>
+        <%_ } _%>
+        <button type="button" class="btn col btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,124 @@
+<%- include("../../../partials/headers/start-header.ejs") _%>
+  <link rel="stylesheet" href="/css/vendors/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+
+  <div class="container" style="display: flex; flex-direction: row; justify-content: center; align-items: center; height: 100vh;">
+    <div class="align-middle">
+      <div class="card border rounded" style="max-width: 30vw; min-width: 400px;">
+        <div class="card-header" style="background-color: white;">
+          <img src="/images/logoLogin.png" style="width: 100%;">
+        </div>
+        <div class="card-body border">
+          
+          <form id="formlogin" method="POST" action="/logar">
+            <input type="hidden" id="msgToUser" value="<%= msgToUser %>">
+            <input type="hidden" id="rota" name="rota" value="<%= rota %>">
+
+            <div class="form-group">
+              <label for="nome">Usuário</label>
+              <input type="text" class="form-control" id="nome" name="nome" autocomplete="off" required autofocus >
+            </div>
+
+            <div class="form-group mt-2">
+              <label for="senha">Senha</label>
+              <input type="password" class="form-control" id="senha" name="senha" required>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="button" class="btn btn-block mt-4 mainColors text-light" id="enviar">Acessar</button>
+              <%_ if(locals?.newUser == 1) { _%>
+                <a href="/novo" type="button" class="btn btn-block btn-success mt-2" >Cadastrar</a>
+              <%_ } _%>
+            </div>
+              
+          </form>
+
+          <div class="text-center" id="aguardando" style="display: none;">
+            <br>
+            <div class="spinner-grow text-primary" role="status">
+              <span class="sr-only">.</span>
+            </div>
+            <div class="spinner-grow text-primary" role="status">
+              <span class="sr-only">.</span>
+            </div>
+            <div class="spinner-grow text-warning" role="status">
+              <span class="sr-only">.</span>
+            </div>
+            <div class="spinner-grow text-warning" role="status">
+              <span class="sr-only">.</span>
+            </div>
+            <div class="spinner-grow text-primary" role="status">
+              <span class="sr-only">.</span>
+            </div>
+            <div class="spinner-grow text-primary" role="status">
+              <span class="sr-only">.</span>
+            </div>
+
+          </div>
+          <br>
+          <div class="alert alert-danger mt-2" role="alert" id="div_user_message" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/vendors/jquery/jquery-3.6.0.min.js"></script>
+  <script src="/js/vendors/bootstrap/popper.min.js"></script>
+  <script src="/js/vendors/bootstrap/bootstrap.min.js"></script>
+  <script> 
+
+    const div_user_message = document.getElementById("div_user_message")
+    const aguardando = document.getElementById("aguardando")
+    const formlogin = document.getElementById("formlogin")
+    const msgToUser = document.getElementById("msgToUser")
+    const enviar = document.getElementById("enviar")
+    const nome = document.getElementById("nome")
+    const senha = document.getElementById("senha")
+
+    formlogin.addEventListener('keypress', event => {
+      var charCode = event.charCode;
+      if (charCode == 13) {
+        logar()
+      }
+    })
+
+    enviar.addEventListener("click", event => {
+      logar()
+    })
+
+    if (msgToUser.value.length > 0) {
+        show_message(msgToUser.value, 5)
+      }
+
+    //------------------------------------------------------------
+    function logar() {
+      if (nome.value.length <= 0 || senha.value.length <= 0) 
+        return show_message('F01: Favor preencher os campos obrigatórios', 5)
+      formlogin.submit()
+      BloquearCampo()
+    }
+
+    //------------------------------------------------------------
+    function BloquearCampo() {
+      nome.disabled = true
+      senha.disabled = true
+      enviar.disabled = true
+      aguardando.style.display = 'block'
+      div_user_message.innerHTML = ""
+      div_user_message.style.display = 'none'
+    }
+
+    //----------------------------------------------------------------------------
+    function show_message(msg, seconds) {
+      div_user_message.innerHTML = msg
+      div_user_message.style.display = "block"
+      setTimeout(function () {
+        div_user_message.style.display = "none"
+      }, seconds * 1000);
+    }
+
+  </script>
+
+<%- include("../../../partials/footer.ejs") %>

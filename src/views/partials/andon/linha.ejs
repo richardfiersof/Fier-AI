@@ -1,0 +1,32 @@
+<div id="maquina<%= maquinaId _%>" data-item-id="<%= maquinaId _%>">
+  <%_ if (locals.andon) {_%>
+  <div class="card user-select-none m-0 p-1 auto-colors" style="--cor-fundo: <%= andon?.andonTiposCor ?? 'transparent' _%>;--cor-fonte: <%= andon?.andonTiposCorFonte ?? 'inherit' _%>;">
+    <div class="row">
+      <div class="col"><%= andon.andonTiposDescricao _%></div> 
+      <div class="col"><%= maquinaIdentificacao _%></div> 
+      <div class="col">Inicio: <%= moment(parada.maquinaParadaDataInicial).format("DD/MM/YYYY") %> <%= parada.maquinaParadaHoraInicial _%></div> 
+      <div class="col">Atual: <span></span></div> 
+      <div class="col-auto">
+        <button class="btn btn-sm auto-colors dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false" style="--cor-fundo: <%= andon?.andonTiposBotaoCor ?? 'transparent' _%>;--cor-fonte: <%= andon?.andonTiposBotaoCorFonte ?? 'inherit' _%>;">
+          <icon class="fa fa-th-list"></icon>
+        </button>
+        <ul class="auto-colors dropdown-menu" aria-labelledby="dropdownMenu" style="--cor-fundo: <%= andon?.andonTiposBotaoCor ?? 'transparent' _%>;--cor-fonte: <%= andon?.andonTiposBotaoCorFonte ?? 'inherit' _%>;">
+          <li>
+            <button class="dropdown-item" id="">Gerar parada</button>
+          </li>
+          <li>
+            <button class="dropdown-item" id="">Ajuda</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <%_ } else  { _%>
+    <div class="card user-select-none m-0 p-2 andon-linha bg-success text-light">
+      <div class="row">
+        <div class="col"><%= maquinaStatus _%></div> 
+        <div class="col"><%= maquinaIdentificacao _%></div> 
+      </div>
+    </div>
+  <%_ } _%>
+</div>

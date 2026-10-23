@@ -1,0 +1,32 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../partials/headers/end-header.ejs") _%>
+<div class="card m-0 p-0">
+  <div class="card-body d-flex justify-content-center m-0 p-1">
+    <div class="m-0 p-0 andonInicial" id="andons">
+      <%_ if (maquinas?.length) { _%>
+        <%_ for (const { maquinaId, maquinaCodigo, maquinaDescricao, maquinaIdentificacao, maquinaStatus, andon, parada, calendario, calendarioData } of maquinas) { _%>
+          <%- include("../../partials/andon/item.ejs", {maquinaId, maquinaCodigo, maquinaDescricao, maquinaIdentificacao, maquinaStatus, andon, parada, calendario, calendarioData }) _%>
+          <%#- include("../../partials/andon/linha.ejs", {maquinaId, maquinaCodigo, maquinaDescricao, maquinaIdentificacao, maquinaStatus, andon, parada }) _%>
+          <%_ } _%>
+          <%_ } else { _%>
+        <p>Sem máquinas neste grupo de visualização</p>
+      <%_ } _%>
+    </div>
+  </div>
+</div>
+
+<div class="loading-overlay" id="carregando">
+  Carregando...
+</div>
+<%- include("../../partials/modal/modal-autenticacao.ejs") _%>
+
+<%_ for( const obj of modalInfo) { _%>
+  <%_ const fileName='../../partials/modal/' +obj.modalType +'.ejs' _%>
+  <%- include(fileName, obj) _%>
+<%_ } _%>
+
+<%- include('../../partials/jsinclude.ejs') _%>
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/libs/producao/andon/andon.cli.js" defer></script>
+<%- include('../../partials/footer.ejs') _%>

@@ -1,0 +1,34 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../partials/headers/end-header.ejs") _%>
+<%_ if(locals.usNome) {_%>
+  <%- include("../../partials/navbar.ejs") _%>
+<%_ } _%>
+
+<div class="container mainItem" style="margin-top: 10%; width: 50%;">
+  <div class="card alert alert-danger">
+    <div class="card-header"> 
+      <div class="row">
+        <div class="col-auto">
+          <icon class="fa fa-times fa-2x"></icon>
+        </div>
+        <div class="col mt-1">
+          Erro 404, página não encontrada.
+        </div>
+      </div>
+    </div>
+    <%_ if(locals.url) { _%>
+      <div class="card-body">
+        A url que você digitou não existe:
+        <br>
+        <strong class="p-2"><%= url _%></strong>
+      </div>
+    <%_ } _%>
+  </div>
+</div>
+
+<%- include("../../partials/jsinclude.ejs") _%>
+
+<%_ if(locals.usNome) {_%>
+  <%- include('../../partials/footer.ejs') _%>
+<%_ } _%>

@@ -1,0 +1,95 @@
+:root{
+    --bconfig: 0.1rem solid black;
+    --mcor: rgb(226,239,218)
+}
+
+table,td,tr,th{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+}
+
+.itemCorPrincipal{
+    background-color: var(--mcor);
+}
+
+.itemBordered{
+    border: var(--bconfig) !important;
+    border-collapse: collapse;
+}
+
+.itemComum{
+    border-bottom: var(--bconfig) !important;
+    border-right: var(--bconfig) !important;
+}
+
+.itemTituloBorder{
+    border-right: var(--bconfig) !important;
+    border-left: var(--bconfig) !important;
+    border-top: var(--bconfig) !important;
+}
+
+.itemPrimeiroUltimo{
+    border-right: var(--bconfig) !important;
+    border-bottom: var(--bconfig) !important;
+    border-top: var(--bconfig) !important;
+}
+
+.itemPrimeiro{
+    border-bottom: var(--bconfig) !important;
+    border-right: var(--bconfig) !important;
+    border-left: var(--bconfig) !important;
+}
+
+.itemUltimoB{
+    border-right: var(--bconfig) !important;
+}
+
+.itemUltimoR{
+    border-bottom: var(--bconfig) !important;
+}
+
+.tableTextSizeSmall{
+    font-size: 9px;
+    padding: 1px;
+}
+
+.pTopTitulo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pNormal{
+    padding-top: 0.5rem;
+}
+
+.pLoteNum{
+    padding-left: 2px;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.centerDiv{
+    vertical-align: middle;
+}
+
+.pMain{
+    padding: 2px;
+}
+
+.mainObj{
+    padding: 0;
+    margin: 0.5rem 0 0 0 ;
+}
+.marca{
+    display: none;
+}
+
+@media print {
+    @page {
+       size: 'A4' !important;
+       padding: 0;
+       margin: 1rem;
+       border: var(--bconfig) !important;
+    }
+}

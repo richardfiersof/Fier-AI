@@ -1,0 +1,41 @@
+<%- include("../../../partials/headers/start-header.ejs") _%>
+<%- include("../../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../../partials/headers/end-header.ejs") _%>
+<%- include("../../../partials/navbar.ejs") %>  
+
+<div class="container-fluid mainItem">
+  <div class="card">
+    <div class="card-header">
+      <button type="button" class="btn btn-sm btn-outline-dark">Alterar Senha</button>
+    </div>
+    <div class="card-body">
+      <form>
+        <input type="password" hidden>
+        <div class="form-group">
+          <label for="usNome">Nome</label>
+          <input type="text" class="form-control" id="usNome" value="<%= usNome %>" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="newPws">Senha Nova</label>
+          <input type="password" class="form-control" id="newPws" required>
+        </div>
+
+        <div class="form-group">
+          <label for="newPws2">Confirmar senha nova</label>
+          <input type="password" class="form-control" id="newPws2" required>
+        </div>
+
+        <br>
+        <button type="button" class="btn btn-primary" id="btnSalvar">Confirmar</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include("../../../partials/jsinclude.ejs") %>
+
+<script src="/js/base.cli.js" defer ></script>
+<script src="/js/libs/sistema/usuarios/altpws.cli.js" defer ></script>
+
+<%- include("../../../partials/footer.ejs") %>

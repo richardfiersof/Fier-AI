@@ -1,0 +1,51 @@
+﻿<%- include('../../partials/headers/start-header.ejs') _%>
+<%- include('../../partials/headers/import-padrao-header.ejs') _%>
+<%- include('../../partials/headers/end-header.ejs') _%>
+<%- include('../../partials/navbar.ejs') _%>
+
+<%- include("../../partials/card/start-card.ejs") _%>
+      <button type="button" class="btn btn-sm btn-primary" id="btnMainDetail" title="Consultar Detalhes">
+        <i class="fa fa-eye" aria-hidden="true"></i> Detalhes
+      </button>
+      <%_ if (locals.canReport) { _%>
+      <button type="button" class="btn btn-sm btn-secondary" id="btnMainReport" title="Registro de atividade">
+        <i class="fa fa-list" aria-hidden="true"></i> Registro de atividade
+      </button>
+      <%_ } _%>
+    </div>
+    <div class="input-group col">
+      <button class="btn btn-sm btn-outline-secondary" type="button" id="btnNewDate">Selecionar</button>
+      <input type="date" class="form-control form-control-sm" id="newDate" placeholder="Data">
+    </div>
+    <%- include("../../partials/btns/btn-filter.ejs") _%>
+  </div>
+</div>
+<%- include("../../partials/card/end-card.ejs") _%>
+
+<%- include("../../partials/modal/modal-padrao.ejs", {modalSize:"", modalCols: ""})_%>
+
+<div class="modal fade" id="detailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalhes</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div id="divModal"></div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("../../partials/jsinclude.ejs") _%>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/libs/sistema/logs/logs.cli.js" defer></script>
+
+<%- include("../../partials/footer.ejs") _%>

@@ -1,0 +1,55 @@
+<%- include('../../partials/headers/start-header.ejs') _%>
+<%- include('../../partials/headers/import-padrao-header.ejs') _%>
+<%- include('../../partials/headers/end-header.ejs') _%>
+<%- include('../../partials/navbar.ejs') _%>
+
+<div class="container-fluid mainItem">
+  <div class="card">
+    <div class="card-header text-center">
+      <h5 class="py-2">
+        Registros de ações referente ao dia <%= moment(data).format("DD/MM/YYYY") _%>
+      </h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col mb-2">
+          <%- include('../../partials/btns/btn-padrao.ejs') _%>
+        </div>
+      </div>
+      <table class="table table-secondary table-bordered border-dark rounded">
+        <thead>
+          <tr>
+            <th class="text-center">Usuário</th>
+            <th>Ação</th>
+            <th>Nº de operações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%_ for ( const { usuario, acoes } of mainArr ) { _%>
+            <tr>
+              <td rowspan="<%= acoes.length +1 _%>" class="text-center align-middle">
+                <%= usuario _%>
+              </td>
+              <%_ for ( const { acao, qtd } of acoes ) { _%>
+                <tr>
+                  <td>
+                    <%= acao _%>
+                  </td>
+                  <td>
+                    <%= qtd _%>
+                  </td>
+                </tr>
+              <%_ } _%>    
+            </tr>
+          <%_ } _%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/jsinclude.ejs') _%>
+<script>
+  document.getElementById("btnMainVoltar").onclick = () =>{ history.back() }
+</script>
+<%- include('../../partials/footer.ejs') _%>

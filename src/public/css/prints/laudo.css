@@ -1,0 +1,123 @@
+*{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9.2px;
+}
+
+.itemCorPrincipal{
+  background-color: rgb(226,239,218);
+}
+
+.itemBordered{
+  border: 0.1rem solid black !important;
+  border-collapse: collapse;
+}
+
+.itemComum{
+  border-bottom: 0.1rem solid black !important;
+  border-right: 0.1rem solid black !important;
+}
+
+.itemTituloBorder{
+  border-right: 0.1rem solid black !important;
+  border-left: 0.1rem solid black !important;
+  border-top: 0.1rem solid black !important;
+}
+
+.itemPrimeiroUltimo{
+  border-right: 0.1rem solid black !important;
+  border-bottom: 0.1rem solid black !important;
+  border-top: 0.1rem solid black !important;
+}
+
+.itemPrimeiro{
+  border-bottom: 0.1rem solid black !important;
+  border-right: 0.1rem solid black !important;
+  border-left: 0.1rem solid black !important;
+}
+
+.itemUltimoB{
+  border-right: 0.1rem solid black !important;
+}
+
+.itemUltimoR{
+  border-bottom: 0.1rem solid black !important;
+}
+
+.itemBorderTop{
+  border-top: 0.1rem solid black !important;
+}
+
+.tableTextSizeMedium{
+  font-size: 8.2px;
+}
+.tableTextSizeSmall{
+  font-size: 7.7px;
+}
+.tableTextSizeSmaller{
+  font-size: 7px;
+}
+
+.tableTextSizeTitle{
+  font-size: 12px;
+}
+
+.pTopTitulo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pNormal{
+  padding-top: 0.2rem;
+}
+
+.pLoteNum{
+  padding-left: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.centerDiv{
+  vertical-align: middle;
+}
+
+.pMain{
+  padding: 5px;
+}
+
+.mainObj{
+  padding: 0;
+  margin: 0.5rem 0 0 0 ;
+}
+.marca{
+  display: none;
+}
+
+@media print {
+  @page {
+    size: 'A4' !important;
+    padding: 0;
+    margin: 10mm;
+    /* border: 0.1rem solid black !important; */
+  }
+  .btnDiv{
+    display: none;
+  }
+  .marca{
+    position: fixed;
+    margin: 35% auto;
+    text-align: center;
+    /* vertical-align: middle; */
+    display: block;
+    font-size: 15rem;
+    opacity: 30%;
+    transform: rotate(-40deg);
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
+  *{
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+  }
+}

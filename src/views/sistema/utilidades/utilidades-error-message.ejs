@@ -1,0 +1,32 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../partials/headers/end-header.ejs") _%>
+<%_ if(locals.usNome) {_%>
+  <%- include("../../partials/navbar.ejs") _%>
+<%_ } _%>
+
+<div class="container mainItem" style="margin-top: 10%; width: 50%;">
+  <div class="card alert alert-danger">
+    <div class="card-header"> 
+      <div class="row">
+        <div class="col-auto">
+          <icon class="fa fa-times-circle-o fa-2x" ></icon>
+        </div>
+        <div class="col mt-1">
+          Erro ao realizar operação
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <strong class="p-2">
+        <%= message _%>
+      </strong>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/jsinclude.ejs') _%>
+
+<%_ if(locals.usNome) {_%>
+  <%- include('../../partials/footer.ejs') _%>
+<%_ } _%>

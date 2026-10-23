@@ -1,0 +1,74 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../partials/headers/end-header.ejs") _%>
+<%- include("../../partials/navbar.ejs") _%>
+
+<div class="container-fluid mainItem">
+  <div class="card">
+    <!-- Title  -->
+    <div class="alert alert-secondary p-1 m-0" role="alert">
+      <div class="row">
+        <div class="col">
+          <%- include('../../partials/btns/btn-padrao.ejs') _%>
+        </div>
+        <%- include('../../partials/btns/btn-filter.ejs') _%>
+      </div>
+    </div>
+
+    <div class="alert alert-secondary p-1 m-0" role="alert">
+      <div id="mainTable"></div>
+    </div>
+  </div>
+</div>
+
+<%- include('../../partials/modal/modal-delete.ejs') _%>
+
+<div class="modal fade" id="mainModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Notas: #<span id="ajudaId"></span> </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="divNewUp">
+          <div class="row">
+            <div class="col">
+              <label for="ajudaModulo">Módulo</label>
+              <input type="text" id="ajudaModulo" class="form-control form-control-sm" >
+            </div>
+            <div class="col">
+              <label for="ajudaTitulo">Titulo</label>
+              <input type="text" id="ajudaTitulo" class="form-control form-control-sm" >
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label for="ajudaPalavraChave">Palavra-Chave</label>
+              <textarea class="form-control form-control-sm" id="ajudaPalavraChave"></textarea>
+            </div>
+          </div>
+
+          <div id="ajudaInfo"></div>
+        </div>
+        <div id="divShow" hidden></div>
+      </div>
+      <div class="modal-footer row">
+        <div class="col" id="divBtnSalvar">
+          <button type="button" class="btn btn-primary btn-sm col-12" id="btnSalvar">Confirmar</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-danger btn-sm col-12" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" id="selectedId"   value="<%= selectedId === null || selectedId === undefined ? 0 : selectedId  _%>">
+
+<%- include('../../partials/jsinclude.ejs') _%>
+
+<script src="/js/base.cli.js"></script>
+<script src="/js/libs/sistema/ajuda/ajuda.cli.js"></script>
+
+<%- include('../../partials/footer.ejs') _%>

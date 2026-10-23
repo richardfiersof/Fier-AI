@@ -1,0 +1,45 @@
+<%_ if(locals.sysTitle) {_%>
+  <button type="button" class="m-1 btn btn-sm btn-outline-dark"> <%- sysTitle _%></button>
+<%_ } _%>
+
+<%_ if(locals.canCreate) {_%>
+  <button type="button" class="m-1 btn btn-sm btn-success" id="btnMainNew" title="Novo"> 
+    <icon class="fa fa-plus-square-o"></icon> Novo 
+  </button>
+<%_ } _%>
+
+<%_ if(locals.canUpdate) {_%>
+  <button type="button" class="m-1 btn btn-sm btn-info text-light" id="btnMainUpdate" title="Editar"> 
+    <i class="fa fa-pencil" aria-hidden="true"></i> Editar 
+  </button>
+<%_ } _%>
+
+<%_ if(!locals.canRead) { _%>
+  <button type="button" class="m-1 btn btn-sm btn-primary" id="btnMainShow" title="Consultar"> 
+    <icon class="fa fa-eye"></icon> Consultar 
+  </button>
+<%_ } _%>
+
+<%_ if(locals.canDelete) {_%>
+  <button type="button" class="m-1 btn btn-sm btn-danger" id="btnMainDelete" title="Deletar"> 
+    <icon class="fa fa-trash"></icon> Deletar 
+  </button>
+<%_ } _%>
+
+<%_ if(locals.canDouble) {_%>
+  <button type="button" class="m-1 btn btn-sm btn-secondary" id="btnMainDuplicate" title="Duplicar"> 
+    <icon class="fa fa-copy"></icon> Duplicar
+  </button>
+<%_ } _%>
+
+<%_ if(locals.canDown) {_%>
+  <button type="button" class="m-1 btn btn-sm btn-secondary" id="btnMainDown" title="Download de dados "> 
+    <i class="fa fa-download" aria-hidden="true"></i> Download 
+  </button>
+<%_ } _%>
+
+<%_ if(locals.canVoltar) {_%>
+  <button type="button" class="m-1 btn btn-sm btn-secondary" id="btnMainVoltar" title="Voltar"> 
+    <icon class="fa fa-reply"></icon> Voltar 
+  </button>
+<%_ } _%>

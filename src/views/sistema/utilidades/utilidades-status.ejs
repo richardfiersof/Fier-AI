@@ -1,0 +1,124 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<%- include("../../partials/headers/end-header.ejs") _%>
+
+<%_ if(locals.canNav) {_%>
+  <%- include("../../partials/navbar.ejs") _%>
+<%_ } _%>     
+
+
+<div class="container-fluid mainItem">
+  <div class="card">
+    <div class="card-header"> 
+      <div class="row">
+        <div class="col">
+          Documento: <%= sysTitulo _%>,
+          Status atual: <%= statusAtual _%>
+        </div> 
+
+        <%_ if(locals.canVoltar) {_%>
+        <div class="col-auto">
+          <button type="button" class="btn btn-sm btn-secondary" id="btnMainVoltar" title="Voltar"> 
+            <icon class="fa fa-reply"></icon> Voltar 
+          </button>
+        </div>
+        <%_ } _%>     
+      </div>  
+    </div>
+    <div class="card-body">
+      <div class="row p-0 mb-1">
+        <div class="col text-center">
+          <strong>
+            Alteração do status
+          </strong>
+        </div>
+      </div>
+      <div class="border border-4 rounded p-2">
+        <div class="row p-1">
+          <div class="col-auto">
+            <label for="aprovador">Aprovador</label>
+          </div>
+          <%_ if(lista.length >1) { _%>
+            <div class="col">
+              <select id="aprovador" class="form-control form-control-sm">
+                <%- lista _%>
+              </select>
+            </div>
+          <%_ } else { _%>
+            <div class="col">
+              Não há aprovadores para o próximo status.
+            </div>
+          <%_ } _%>
+        </div>
+            
+        <div class="row">
+          <div class="col">
+            <label for="acompanhamentoStatusObservacao">Observação</label>
+            <textarea class="form-control form-control-sm" id="acompanhamentoStatusObservacao"></textarea>
+          </div>
+        </div>
+        <div class="row p-1">
+          <div class="col">
+            <button class="col btn btn-primary btn-sm mt-1" id="btnAprovar" >
+              <icon class="fa fa-check"></icon> Confirmar
+            </button>
+          </div>
+        </div>
+      </div>
+      <br>
+      <%_ if(locals.acomps.length >0) {_%>
+      <div class="row">
+        <div class="col mb-1 text-center">
+          <strong>
+            Acompanhamentos de revisões
+          </strong>
+        </div>
+      </div>
+      <div class="border border-4 rounded p-2">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>De</th>
+              <th>Para</th>
+              <th>Observação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%_ for (const acomp of acomps) { _%>
+              <tr>
+                <td>
+                  <%= moment(acomp.acompanhamentoStatusData).format('DD/MM/YYYY') _%>
+                  <%= acomp.acompanhamentoStatusHora.substring(0, acomp.acompanhamentoStatusHora.length -3) _%>
+                </td>
+                <td> <%= acomp.acompanhamentoStatusAtual _%> </td>
+                <td> <%= acomp.acompanhamentoStatusNovo _%> </td>
+                <td>
+                  <%_ if(acomp.acompanhamentoStatusObservacao.length >100) {_%>
+                    <%= acomp.acompanhamentoStatusObservacao.substring(0, 99) _%> [...]
+                    <button type="button" class="btn btn-secondary btn-sm" title="<%= acomp.acompanhamentoStatusObservacao _%>" disabled> Info</button>
+                  <%_ }else { _%>
+                    <%= acomp.acompanhamentoStatusObservacao _%> 
+                  <%_ } _%>
+                </td>
+              </tr>
+            <%_ } _%>
+          </tbody>
+        </table>
+      </div>
+      <%_ } _%>
+    </div>
+  </div>
+</div>
+
+<input type="number" id="paiId" value="<%= paiId _%>" hidden>
+<input type="text" id="documentoTipo" value="<%= documentoTipo _%>" hidden>
+<input type="number" id="atualId" value="<%= atualId _%>" hidden>
+<input type="text"   id="tipo" value="<%= tipo _%>" hidden>
+
+<%- include('../../partials/jsinclude.ejs') _%>
+
+<script src="/js/base.cli.js" defer></script>
+<script src="/js/<%= pathStatus _%>" defer></script>
+
+<%- include('../../partials/footer.ejs') _%>

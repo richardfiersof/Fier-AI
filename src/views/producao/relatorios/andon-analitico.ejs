@@ -1,0 +1,59 @@
+<%- include("../../partials/headers/start-header.ejs") _%>
+<%- include("../../partials/headers/import-padrao-header.ejs") _%>
+<style>
+  body{
+    background-color: white !important;
+  }
+</style>
+<%- include("../../partials/headers/end-header.ejs") _%>
+
+<main class="container-fluid">
+  <div class="row text-center m-0 py-1">
+    <div class="border border-dark col-auto"><img src="/images/logoImpressao.png" style="height: 60px;"></div>
+    <div class="border-top border-bottom border-dark fs-5 col"><%= sysTitle _%> <br> Período: <%= moment(dataInicial).format("DD/MM/YYYY") %> - <%= moment(dataFinal).format("DD/MM/YYYY") _%></div>
+    <div class="border border-dark col-auto p-1"><%= moment().format("DD/MM/YYYY") _%><br><%= moment().format("HH:mm") _%></div>
+  </div>
+  
+  <table class="table table-sm table-bordered border-dark">
+    <thead>
+      <tr>
+        <th>Máquina</th>
+        <th>Tipo</th>
+        <th>Defeito</th>
+        <th>Inicio</th>
+        <th>Hora</th>
+        <th>Fim</th>
+        <th>Hora</th>
+        <th>Total líquido</th>
+        <th>Total bruto</th>
+        <th>Funcionário inicial</th>
+        <th>Funcionário final</th>
+        <th>Observação inicial</th>
+        <th>Observação final</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%_ for ( const item of mainData ) { _%>
+        <tr>
+          <td><%= item.maquina.maquinaIdentificacao _%></td>
+          <td><%= item.andonTipo.andonTiposDescricao _%></td>
+          <td><%= item.defeito.defeitoNome _%></td>
+          <td><%= item.dataInicialAjustada _%></td>
+          <td><%= item.horaInicialAjustada _%></td>
+          <td><%= item.dataFinalAjustada _%></td>
+          <td><%= item.horaFinalAjustada _%></td>
+          <td><%= item.informacoes.total _%></td>
+          <td><%= item.informacoes.bruto _%></td>
+          <td><%= item.funcionarioInicial.funcionarioNome _%></td>
+          <td><%= item.funcionarioFinal?.funcionarioNome _%></td>
+          <td><%= item.maquinaParadaObservacaoInicial _%></td>
+          <td><%= item.maquinaParadaObservacaoFinal _%></td>
+        </tr>
+      <%_ } _%>
+    </tbody>
+  </table>
+</main>
+
+<script src="/js/base.cli.js" defer></script>
+
+<%- include('../../partials/footer.ejs') _%>

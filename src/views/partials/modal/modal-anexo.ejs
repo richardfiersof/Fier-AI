@@ -1,0 +1,29 @@
+
+<div class="modal fade" id="uploadModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Upload Anexo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row">
+        <%_ for (const data of anexoForm) { _%>
+          <div class="col" id="div<%=data.nome%>">
+            <div class="form-group" >
+              <label for="<%= data.nome _%>"><%= data.titulo _%></label>
+              <<%-data.type%> type="<%= data.dataType _%>"  class="form-control form-control-sm" id="<%= data.nome _%>" <%= data.atritubos %>>
+            </div>
+          </div>
+        <%_ } _%>
+        </div>
+        <div id="modalAnexoOutros"></div>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn col btn-primary btn-sm" id="btnUploadModal">Confirmar</button>
+        <button type="button" class="btn col btn-danger btn-sm" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

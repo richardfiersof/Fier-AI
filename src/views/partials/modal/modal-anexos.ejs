@@ -1,0 +1,45 @@
+
+<div class="modal fade" id="anexosModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Anexos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <%_ if(locals.canUpload) {_%>
+        <div class="row">
+          <div class="col-auto">
+            <label for="anexos">Anexos</label>
+          </div>
+          <div class="col">
+            <input type="file" class="form-control form-control-sm" id="anexos" 
+            accept="<%= locals.acceptAnexo ? locals.acceptAnexo : "*" _%>"
+            multiple>
+          </div>
+          <div class="col-auto">
+            <button class="btn btn-sm btn-success" id="btnAddAnexos" type="button" title="Adicionar"> Adicionar </button>
+          </div>
+        </div>
+        <hr>
+        <%_ } _%>
+        <div class="row">
+          <div class="col">
+            Arquivos
+          </div>
+        </div>
+        <hr>
+        <div id="arquivosBody">
+          <div class="row">
+            <div class="col">Sem arquivos!</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer text-center">
+        <button type="button" class="btn btn-danger btn-sm col" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>

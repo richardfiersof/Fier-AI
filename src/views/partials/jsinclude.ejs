@@ -1,0 +1,96 @@
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+	function showMessageGeral(infoShow, seconds, isError) {
+		try {
+
+			const tagSpan = document.createElement('nav')
+			tagSpan.setAttribute('class', 'navbar')
+			let icon
+			let alert
+			if (isError == true) {
+				alert = 'alert-danger'
+				icon = 'fa-times-circle-o'
+			} else if (isError == false) {
+				alert = 'alert-success'
+				icon = 'fa-check-circle-o'
+			} else {
+				alert = 'alert-warning'
+				icon = 'fa-exclamation-circle'
+			}
+			tagSpan.innerHTML = `<div class="container p-2 alert ${alert}"><i class="fa ${icon}" aria-hidden="true"></i>&nbsp${infoShow}</div>`
+
+			const mainMessages = document.getElementById('mainMessages')
+			mainMessages.appendChild(tagSpan)
+			setTimeout(function () {
+				mainMessages.removeChild(mainMessages.firstElementChild)
+			}, (seconds * 1000));
+
+		} catch (error) {
+			console.log('sysdoclib: ' + error.message)
+		}
+		return
+	}
+	if('<%= locals.usNome _%>'.length >0 ){
+		const asyncComunicationModule = io()
+		asyncComunicationModule.emit('using','<%= usNome _%>', window.location)
+		const sectionAvisos = document.getElementById('sectionAvisos')
+		if(sectionAvisos){
+			checkAvisos()
+		}
+		if(!document.getElementById("formlogin")){
+			asyncComunicationModule.on('servidor_reiniciado', (data) => {
+				checkSessionAndRedirect();
+			});
+		}
+	}
+
+	async function checkAvisos(){
+		const resp = await fetch(`/utilidade/avisos/show`)
+		const dados = await resp.json()
+		sectionAvisos.innerHTML = ''
+		if(dados.length >0){
+			for await ( const item of dados){
+				sectionAvisos.innerHTML += `<div class="row w-100">
+				<div class="col">${item.avisoTexto}</div>
+				</div>`
+			}
+			sectionAvisos.style.display = 'block'
+		}
+	}
+
+	async function checkSessionAndRedirect() {
+		try {
+
+			const response = await fetch('/verifica-sessao'); 
+			if (response.status === 401) {
+				showMessageGeral("Servidor reiniciado, favor realizar login novamente!", 999, "alert");
+				setTimeout(()=>{
+					location.reload(); 
+				},2000)
+			}
+		} catch (error) {
+			console.error("Erro ao verificar a sessão:", error);
+		}
+	}
+
+</script>
+
+<!-- jQuery -->
+<script src="/js/vendors/jquery/jquery-3.6.0.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="/js/vendors/bootstrap/popper.min.js"></script>
+<script src="/js/vendors/bootstrap/bootstrap.min.js"></script>
+
+<!--Tabulator-->
+<script src="/js/vendors/luxon/luxon.js"></script>
+<script src="/js/vendors/tabulator/xlsx.full.min.js"></script>
+<script src="/js/vendors/tabulator/tabulator.min.js"></script>
+
+<!--TinyMCE-->
+<script src="/js/vendors/tinymce/tinymce.min.js"></script>
+
+<!--Moment -->
+<script src="/js/vendors/moment/moment.js"></script>
+<script src="/js/vendors/moment/moment-with-locales.min.js"></script>
