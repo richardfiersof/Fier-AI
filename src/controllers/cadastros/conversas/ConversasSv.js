@@ -13,6 +13,10 @@ const { defaultResponseJson, defaultResponseSend, defaultResponseRender } = requ
 const { reqRender } = require("../../../utilidades/utils");
 const logText = "conversas"
 const mainId = "conversaId"
+// Inicializa o cliente apontando para o Docker da Hostinger
+const ollama = new Ollama({ 
+  host: 'http://72.62.101.250:32768/' // Altere pelo IP da VPS ou localhost
+});
 
 module.exports[sys.main.cmdService] = async (req, res) => {
   try {
@@ -201,13 +205,6 @@ module.exports.fncConversasData = async (where = {}) =>{
   return await Conversas.findAll({where,raw:true})
 }
 
-
-
-// Inicializa o cliente apontando para o Docker da Hostinger
-const ollama = new Ollama({ 
-  host: 'http://72.62.101.250:32768/' // Altere pelo IP da VPS ou localhost
-});
-
 async function rodarIA(content) {
   try {
     console.log("Conectando ao Ollama na Hostinger...");
@@ -217,6 +214,8 @@ async function rodarIA(content) {
       model: 'ollama', 
       messages: [{ role: 'user', content }],
     });
+    console.log("Foi...");
+
     return response.message.content
   } catch (error) {
     console.error("Erro ao conectar ou processar:", error);
