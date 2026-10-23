@@ -24,7 +24,7 @@ const Ajuda = conn.define("ajuda", {
     allowNull: false
   },
   ajudaInfo: {
-    type: Sequelize.TEXT("long"),
+    type: Sequelize.TEXT(),
     defaultValue: "",
     allowNull: false
   },
