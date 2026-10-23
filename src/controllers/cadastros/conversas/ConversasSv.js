@@ -15,7 +15,7 @@ const logText = "conversas"
 const mainId = "conversaId"
 // Inicializa o cliente apontando para o Docker da Hostinger
 const ollama = new Ollama({ 
-  host: 'http://72.62.101.250:32768/' // Altere pelo IP da VPS ou localhost
+  host: 'http://localhost:32768/' // Altere pelo IP da VPS ou localhost
 });
 
 module.exports[sys.main.cmdService] = async (req, res) => {
