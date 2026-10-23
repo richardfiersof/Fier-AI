@@ -1,5 +1,5 @@
 const { Op } = require("sequelize")
-const Ollama = require("ollama")
+const { Ollama } = require("ollama")
 const {
   sys,
   sysUrl,
