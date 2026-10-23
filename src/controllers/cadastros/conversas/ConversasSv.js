@@ -1,4 +1,5 @@
 const { Op } = require("sequelize")
+const Ollama = require("ollama")
 const {
   sys,
   sysUrl,
@@ -93,22 +94,23 @@ module.exports[sys.new.cmdService] = async (req, res) => {
   try {
     const sessionObj = await reqRender(req)
     const { 
-      conversaNome, 
+      conversaTitulo, 
       conversaConteudo 
     } = req.body
-
+    const conversaResposta = await rodarIA(conversaConteudo)
     const qry =
     await Conversas
     .create(
       {
-        conversaNome,
+        conversaTitulo,
         conversaConteudo,
+        conversaResposta,
         usId: sessionObj.sessionUsId
       }
     )
 
     if (qry) 
-      return await defaultResponseJson(req, res, "NEW", logText, 201, null, qry[mainId] )
+      return await defaultResponseJson(req, res, "NEW", logText, 201, null, {id: qry[mainId], conversaResposta} )
     return await defaultResponseJson(req, res, "ERROR", logText, 400)
 
   } catch (error) {
@@ -197,4 +199,26 @@ module.exports[sys.start.cmdService] = async (req, res) => {
 
 module.exports.fncConversasData = async (where = {}) =>{
   return await Conversas.findAll({where,raw:true})
+}
+
+
+
+// Inicializa o cliente apontando para o Docker da Hostinger
+const ollama = new Ollama({ 
+  host: 'http://72.62.101.250:32768/' // Altere pelo IP da VPS ou localhost
+});
+
+async function rodarIA(content) {
+  try {
+    console.log("Conectando ao Ollama na Hostinger...");
+    
+    // Altere "llama3" pelo modelo que você baixou no Docker da Hostinger
+    const response = await ollama.chat({
+      model: 'llama3', 
+      messages: [{ role: 'user', content }],
+    });
+    return response.message.content
+  } catch (error) {
+    console.error("Erro ao conectar ou processar:", error);
+  }
 }

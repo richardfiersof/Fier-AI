@@ -152,9 +152,13 @@ async function fncBackEnd(url, method, headers, body, modal, checar) {
   const response = await fetch(url, obj)
   const { message, selectedId } = await response.json()
   if (response.status === 200 || response.status === 201) {
-    $(`#${modal}`).modal('hide')
-    await getMainData()
-    await fncSelectRow(selectedId)
+    if(response.status == 201){
+      win.conversaResposta.value = selectedId.conversaResposta
+    }else {
+      $(`#${modal}`).modal('hide')
+      await getMainData()
+      await fncSelectRow(selectedId.id)
+    }
     return showMessage("Operação realizada com sucesso.", 4, false)
   } else return showMessage(message, 4, true)
 
