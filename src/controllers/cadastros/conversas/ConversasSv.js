@@ -211,7 +211,7 @@ async function rodarIA(content) {
     
     // Altere "llama3" pelo modelo que você baixou no Docker da Hostinger
     const response = await ollama.chat({
-      model: 'gemma4:latest', 
+      model: 'llama3.1', 
       messages: [{ role: 'user', content }],
     });
     console.log("Foi...");
