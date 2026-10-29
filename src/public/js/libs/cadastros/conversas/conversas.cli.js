@@ -138,13 +138,16 @@ async function buttonConfig(type, modal, data) {
         return showMessage("Favor preencher uma pergunta!",3,true)
       dataObj.append(`conversaArquivo`, win.conversaArquivo.files[0])
       dataObj.append("dados", JSON.stringify(obj))
+      showMessage("Pergunta foi enviada, por favor aguarde...",3,"alert")
+      win.btnConfirma.disabled = true
       fncBackEnd(
         sys.pergunta,
         'post',
         null,
         dataObj,
         modal,
-        false
+        false,
+        win.btnConfirma
       )
     }
   }
@@ -175,7 +178,7 @@ function bodyConfig() {
 }
 
 //----------------------------------------------------------------------------------------------
-async function fncBackEnd(url, method, headers, body, modal, checar) {
+async function fncBackEnd(url, method, headers, body, modal, checar, btn) {
   if (checar) {
     const valido = await validate()
     if (valido != true) return valido
@@ -186,13 +189,21 @@ async function fncBackEnd(url, method, headers, body, modal, checar) {
   obj.body = body
   const response = await fetch(url, obj)
   const { message, selectedId } = await response.json()
+  if(btn) btn.disabled = false
   if (response.status === 200 || response.status === 201) {
-    if(selectedId?.conversaResposta){
+    if( selectedId != undefined && typeof selectedId == "object" ){
       win.conversaResposta.value = selectedId.conversaResposta
     }else {
       $(`#${modal}`).modal('hide')
       await getMainData()
-      await fncSelectRow(selectedId[mainId])
+      if(selectedId){
+        await fncSelectRow(selectedId)
+        if(response.status === 201) {
+          setTimeout(()=>{
+            win.btnMainConversa.click()
+          },120)
+        }
+      }
     }
     return showMessage("Operação realizada com sucesso.", 4, false)
   } else return showMessage(message, 4, true)

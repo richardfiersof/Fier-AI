@@ -14,7 +14,7 @@ const Conversas = require("./Conversas")
 const { defaultResponseJson, defaultResponseSend, defaultResponseRender } = require("../../../utilidades/respostas")
 const { reqRender } = require("../../../utilidades/utils");
 const { fncMarkdownData } = require("../markdown/MarkdownSv")
-const { pathComplete, anexoSaveNoDatabase } = require("../../../utilidades/anexo")
+const { pathComplete, anexoSaveNoDatabase, anexoDelete } = require("../../../utilidades/anexo")
 const Markdown = require("../markdown/Markdown")
 const path = require("path")
 const logText = "conversas"
@@ -197,7 +197,7 @@ module.exports[sys.update.cmdService] = async (req, res) => {
 module.exports[sys.pergunta.cmdService] = async (req, res) => {
   try {
     const sessionObj = await reqRender(req)
-    const arquivo = req.files.conversaArquivo
+    const arquivo = req.files?.conversaArquivo
     let localArquivo = ""
     let extensao = ""
     const { 
@@ -304,9 +304,11 @@ async function fncGerenciarConteudoIA(content, markdownId = null, arquivo = {loc
         const dadosJsonBruto = fs.readFileSync(arquivo.localArquivo, 'utf8');
         const dadosJson = JSON.parse(dadosJsonBruto);
         content = `${content}\n--- DADOS JSON ---\n${JSON.stringify(dadosJson, null, 2)}\n--- FIM DOS DADOS JSON ---\n`;
+        anexoDelete(arquivo.localArquivo)
       }else if ([".csv", ".txt", ".md"].includes(arquivo.extensao)){
         const dadosTexto = fs.readFileSync(arquivo.localArquivo, 'utf8');
         content = `${content}\n--- DADOS DO ARQUIVO (${arquivo.extensao}) ---\n${dadosTexto}\n--- FIM DOS DADOS ---\n`;
+        anexoDelete(arquivo.localArquivo)
       }
     }
     return await fncPerguntarParaAI(content)

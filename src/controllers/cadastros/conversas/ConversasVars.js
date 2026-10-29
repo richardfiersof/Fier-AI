@@ -140,7 +140,7 @@ module.exports.mainBtns = [
 ]
 
 module.exports.conversaForm = [
-  { titulo: "Pergunta", nome: "conversaConteudo", type: "textarea", atritubos: ["required=true"] },
+  { titulo: "Pergunta", nome: "conversaConteudo", type: "textarea", atritubos: ["required=true focus=conversaModal"] },
   { titulo: "Arquivo", nome: "conversaArquivo", type: "input", dataType: 'file', atritubos: ["accept=.json,.txt,.md,.csv"] },
   { titulo: "Resposta", nome: "conversaResposta", type: "textarea", atritubos: ["readonly=true"] },
 ]
