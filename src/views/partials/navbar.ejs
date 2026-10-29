@@ -18,6 +18,11 @@
             Cadastros
           </a>
           <ul class="dropdown-menu mainColors" aria-labelledby="cadastro_dropdown">
+          <%_ if( acessos.includes("0001-0002-0000-0001") ){ _%>
+            <li class="mainColors">
+              <a class="dropdown-item" href="/cadastro/markdown/">Markdown</a>
+            </li>
+          <%_ } _%>
           <%_ if( acessos.includes("0001-0001-0000-0001") ){ _%>
             <li class="mainColors">
               <a class="dropdown-item" href="/cadastro/conversas/">Conversas</a>

@@ -1,4 +1,5 @@
 const { Op } = require("sequelize")
+const fs = require("fs")
 const { Ollama } = require("ollama")
 const {
   sys,
@@ -6,11 +7,16 @@ const {
   mainForm,
   mainBtns,
   tableConfig,
+  modalInfo
 } = require("./ConversasVars")
 
 const Conversas = require("./Conversas")
 const { defaultResponseJson, defaultResponseSend, defaultResponseRender } = require("../../../utilidades/respostas")
 const { reqRender } = require("../../../utilidades/utils");
+const { fncMarkdownData } = require("../markdown/MarkdownSv")
+const { pathComplete, anexoSaveNoDatabase } = require("../../../utilidades/anexo")
+const Markdown = require("../markdown/Markdown")
+const path = require("path")
 const logText = "conversas"
 const mainId = "conversaId"
 // Inicializa o cliente apontando para o Docker da Hostinger
@@ -42,6 +48,7 @@ module.exports[sys.main.cmdService] = async (req, res) => {
       canUpdate,
       mainForm,
       canFilterStatus: true,
+      modalInfo
     })
 
   } catch (error) {
@@ -99,22 +106,25 @@ module.exports[sys.new.cmdService] = async (req, res) => {
     const sessionObj = await reqRender(req)
     const { 
       conversaTitulo, 
-      conversaConteudo 
+      // conversaConteudo,
+      markdownId
     } = req.body
-    const conversaResposta = await rodarIA(conversaConteudo)
+    // const conversaResposta = await fncGerenciarConteudoIA(conversaConteudo, markdownId)
     const qry =
     await Conversas
     .create(
       {
         conversaTitulo,
-        conversaConteudo,
-        conversaResposta,
-        usId: sessionObj.sessionUsId
+        // conversaConteudo,
+        // conversaResposta,
+        usId: sessionObj.sessionUsId,
+        markdownId
       }
     )
 
     if (qry) 
-      return await defaultResponseJson(req, res, "NEW", logText, 201, null, {id: qry[mainId], conversaResposta} )
+      return await defaultResponseJson(req, res, "NEW", logText, 201, null, qry[mainId] )
+      // return await defaultResponseJson(req, res, "NEW", logText, 201, null, {id: qry[mainId], conversaResposta} )
     return await defaultResponseJson(req, res, "ERROR", logText, 400)
 
   } catch (error) {
@@ -155,7 +165,8 @@ module.exports[sys.update.cmdService] = async (req, res) => {
     const {
       conversaId,
       conversaTitulo,
-      conversaConteudo
+      // conversaConteudo,
+      markdownId
     } = req.body
 
     const [qry] =
@@ -163,7 +174,8 @@ module.exports[sys.update.cmdService] = async (req, res) => {
     .update(
       {
         conversaTitulo,
-        conversaConteudo
+        // conversaConteudo,
+        markdownId
       },
       {
         where:{
@@ -182,8 +194,56 @@ module.exports[sys.update.cmdService] = async (req, res) => {
   }
 }
 
+module.exports[sys.pergunta.cmdService] = async (req, res) => {
+  try {
+    const sessionObj = await reqRender(req)
+    const arquivo = req.files.conversaArquivo
+    let localArquivo = ""
+    let extensao = ""
+    const { 
+      conversaId,
+      conversaConteudo,
+    } = JSON.parse(req.body.dados)
+
+    const check = await this.fncConversasData({conversaId})
+    if(arquivo) {
+      extensao = `.${arquivo.name.split(".").pop()}`
+      const resp = await anexoSaveNoDatabase(arquivo, `arquivo${conversaId}`, extensao, `arquivo\\${conversaId}\\`)
+      if(resp.status == 400)
+        return await defaultResponseJson(req, res, "ERROR", logText, 400)
+      if(resp.status == 500)
+        return await defaultResponseJson(req, res, "ERROR", logText, 500, resp.resp)
+      else localArquivo = resp.resp
+    }
+    const conversaResposta = await fncGerenciarConteudoIA(conversaConteudo, check[0].markdownId, {localArquivo, extensao})
+
+    const [qry] =
+    await Conversas
+    .update(
+      {
+        conversaConteudo,
+        conversaResposta,
+      },{
+        where:{
+          conversaId,
+          usId: sessionObj.sessionUsId
+        }
+      }
+    )
+
+    if (qry>0) 
+      return await defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, conversaResposta}  )
+    return await defaultResponseJson(req, res, "ERROR", logText, 400)
+
+  } catch (error) {
+    return await defaultResponseJson(req, res, "ERROR", logText, 500, error.message)
+  }
+}
+
 module.exports[sys.start.cmdService] = async (req, res) => {
   try {
+
+    const markdowns = await fncMarkdownData({markdownAtivo:1})
 
     return res
     .status(200)
@@ -193,6 +253,7 @@ module.exports[sys.start.cmdService] = async (req, res) => {
         tableConfig,
         mainForm,
         mainBtns,
+        markdowns
       }
     )
 
@@ -201,23 +262,64 @@ module.exports[sys.start.cmdService] = async (req, res) => {
   }
 }
 
-module.exports.fncConversasData = async (where = {}) =>{
-  return await Conversas.findAll({where,raw:true})
+module.exports.fncConversasData = async (where = {}, full = false) =>{
+  if(full){
+    return await Conversas.findAll({where,
+      include:[
+        {
+          model:Markdown,
+          attributes:["markdownTitulo"]
+        }
+      ]
+    })
+  }
+  return await Conversas.findAll({where,
+    attributes:[
+      "conversaId",
+      "conversaTitulo",
+      "conversaConteudo",
+      "conversaData",
+      "conversaStatus",
+      "markdownId",
+    ],
+    include:[
+      {
+        model:Markdown,
+        attributes:["markdownTitulo"]
+      }
+    ]
+  })
 }
 
-async function rodarIA(content) {
+async function fncGerenciarConteudoIA(content, markdownId = null, arquivo = {localArquivo: "", extensao: ""}) {
   try {
-    console.log("Conectando ao Ollama na Hostinger...");
-    
-    // Altere "llama3" pelo modelo que você baixou no Docker da Hostinger
-    const response = await ollama.chat({
-      model: 'llama3.1', 
-      messages: [{ role: 'user', content }],
-    });
-    console.log("Foi...");
-
-    return response.message.content
+    console.log("Conectando ao Ollama...");
+    if(markdownId){
+      const markdownPath = path.join(pathComplete, 'markdown', String(markdownId), `markdown${markdownId}.md`);
+      const markdownBruto = fs.readFileSync(markdownPath, 'utf8');
+      content = `${content}\n--- MANUAL ---\n${markdownBruto}\n--- FIM DO MANUAL ---\n`
+    }
+    if(arquivo.localArquivo.length >0){
+      if(arquivo.extensao == ".json"){
+        const dadosJsonBruto = fs.readFileSync(arquivo.localArquivo, 'utf8');
+        const dadosJson = JSON.parse(dadosJsonBruto);
+        content = `${content}\n--- DADOS JSON ---\n${JSON.stringify(dadosJson, null, 2)}\n--- FIM DOS DADOS JSON ---\n`;
+      }else if ([".csv", ".txt", ".md"].includes(arquivo.extensao)){
+        const dadosTexto = fs.readFileSync(arquivo.localArquivo, 'utf8');
+        content = `${content}\n--- DADOS DO ARQUIVO (${arquivo.extensao}) ---\n${dadosTexto}\n--- FIM DOS DADOS ---\n`;
+      }
+    }
+    return await fncPerguntarParaAI(content)
   } catch (error) {
     console.error("Erro ao conectar ou processar:", error);
+    throw error;
   }
+}
+
+async function fncPerguntarParaAI(content) {
+  const response = await ollama.chat({
+    model: 'llama3.1', 
+    messages: [{ role: 'user', content }],
+  });
+  return response.message.content
 }

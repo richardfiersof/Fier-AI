@@ -12,6 +12,7 @@ module.exports.sysUrl = {
   new:         `${prefixURL}novo`,
   delete:      `${prefixURL}delete`,
   update:      `${prefixURL}update`,
+  pergunta:      `${prefixURL}pergunta`,
   start:       `${prefixURL}start`,
 }
 
@@ -86,6 +87,16 @@ module.exports.sys = {
     cmdIgnore: false,
     cmdAtivo: "1",
   },
+  pergunta: {
+    cmdId: `${this.prefixId}0040`,
+    cmdURL: this.sysUrl.pergunta,
+    cmdService: `${prefixServ}Pergunta`,
+    cmdType: "botao",
+    cmdMethod: "post",
+    cmdTitle: `Alterar`,
+    cmdIgnore: true,
+    cmdAtivo: "1",
+  },
   start: {
     cmdId: `${this.prefixId}0001`,
     cmdURL: this.sysUrl.start,
@@ -107,6 +118,7 @@ module.exports.tableConfig = {
     { title: "Id", download:false , field: "conversaId", headerFilter: true, hozAlign: "center", width: 100, sorter: "number" },
     { title: "Titulo", field: "conversaTitulo", headerFilter: true },
     { title: "Data", field: "conversaData", headerFilter: true },
+    { title: "Markdown", field: "markdown.markdownTitulo", headerFilter: true },
     { title: "Status", field: "conversaStatus", headerFilter: true },
   ],
 }
@@ -114,8 +126,9 @@ module.exports.tableConfig = {
 module.exports.mainForm = [
   { titulo: "Id", nome: "conversaId", type: "input", dataType: "number", atritubos: ["disabled=true"] },
   { titulo: "Titulo", nome: "conversaTitulo", type: "input", dataType: "text", atritubos: ["required=true focus=mainModal"] },
-  { titulo: "Conteudo", nome: "conversaConteudo", type: "textarea", atritubos: ["required=true"] },
-  { titulo: "Resposta", nome: "conversaResposta", type: "textarea", atritubos: ["readonly=true"] },
+  { titulo: "Markdown", nome: "markdownId", type: "select", opcoes: "", atritubos: [""] },
+  // { titulo: "Conteudo", nome: "conversaConteudo", type: "textarea", atritubos: ["required=true"] },
+  // { titulo: "Resposta", nome: "conversaResposta", type: "textarea", atritubos: ["readonly=true"] },
 ]
 
 module.exports.mainBtns = [
@@ -123,4 +136,18 @@ module.exports.mainBtns = [
   { name: "btnMainUpdate", type: "update", modal: "mainModal", func: "main", title: "Editar" },
   { name: "btnMainShow", type: "show", modal: "mainModal", func: "main", title: "Consultar" },
   { name: "btnMainDelete", type: "delete", modal: "deleteModal", func: null, title: "Deletar" },
+  { name: "btnMainConversa", type: "conversa", modal: "conversaModal", func: null, title: "" },
+]
+
+module.exports.conversaForm = [
+  { titulo: "Pergunta", nome: "conversaConteudo", type: "textarea", atritubos: ["required=true"] },
+  { titulo: "Arquivo", nome: "conversaArquivo", type: "input", dataType: 'file', atritubos: ["accept=.json,.txt,.md,.csv"] },
+  { titulo: "Resposta", nome: "conversaResposta", type: "textarea", atritubos: ["readonly=true"] },
+]
+
+module.exports.modalInfo = [
+  {
+    modalId: "conversaModal", modalForm: "formConversaModal", modalData: this.conversaForm, modalBtn: "btnConfirma",
+    modalSize: "modal-xl", modalType: "modal-multi-use", modalTitle: "Conversa", modalRowCols: "row-cols-1"
+  },
 ]

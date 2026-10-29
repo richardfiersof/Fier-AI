@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize")
 const conn = require("../../../database/conn")
 const Usuarios = require("../../sistema/usuarios/Usuarios")
+const Markdown = require("../markdown/Markdown")
 
 const Conversas = conn.define("conversas", {
   conversaId: {
@@ -38,6 +39,10 @@ const Conversas = conn.define("conversas", {
     type: Sequelize.INTEGER,
     allowNull: false
   },
+  markdownId: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
 }, {
   indexes: [
     { name:"conversaData", unique: false, fields: ["conversaData"] },
@@ -45,10 +50,12 @@ const Conversas = conn.define("conversas", {
   ]
 })
 
-
 Conversas.belongsTo(Usuarios, { foreignKey: "usId" })
 Usuarios.hasMany(Conversas, { foreignKey: "usId" })
-
+Conversas.belongsTo(Markdown, { foreignKey: "markdownId" })
+Markdown.hasMany(Conversas, { foreignKey: "markdownId" })
+//DROP TABLE `conversas`
+//npm install marked
 // Conversas.sync({ force: false }).then(() => { console.log("Conversas OK!") })
 
 module.exports = Conversas

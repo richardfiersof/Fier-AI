@@ -1,4 +1,4 @@
-const mainId = 'departamentoId'
+const mainId = 'markdownId'
 
 //----------------------------------------------------------------------------------------------
 fncSetWinVars().then(async w => {
@@ -32,22 +32,11 @@ async function handleStart() {
         win[btn.name].onclick = () =>{
           if(btn.type == 'voltar') 
             history.back()
-          else if(btn.type == 'down')
-            mainTable.download("xlsx", "Departamentos.xlsx", {sheetName:"Departamentos"})
           else 
             fncOpenModal(btn.type,btn.modal,btn.title,btn.func)
         }
      }
     }
-
-    win.modeloExcel.setAttribute('class', 'btn btn-sm btn-success mt-2')
-    win.modeloExcel.onclick = async () =>{
-      window.open(sys.downExcel)
-    }
-    const div = document.createElement('div')
-    div.setAttribute('id', 'divErrorExcel')
-    win.formUploadModal.childNodes[1].append(div)
-
 
   } catch (error) {
     return showMessage(`Error Cli: ${error.message}`, 3, true)
@@ -62,13 +51,6 @@ async function fncOpenModal(type, modal, title) {
     modalBody(type, title)
     buttonConfig(type, modal)
     return $(`#${modal}`).modal('show')
-
-  } else if (type === 'excel') {
-    const divErro = document.getElementById('divErrorExcel')
-    if (divErro) divErro.innerHTML = ""
-    win.excelFile.value = ''
-    await buttonConfig(type, modal)
-    return $(`#${modal}`).modal('show')
   }
 
   const selectedData = mainTable.getSelectedData()
@@ -76,10 +58,13 @@ async function fncOpenModal(type, modal, title) {
     return showMessage("Selecione uma linha!", 3, 'alert')
 
   const url = sys.show.replace(`:${mainId}`, selectedData[0][mainId])
-  const resp = await fetch(`${url}?log=false`)
-
+  let qry = "?log=false"
+  if(type == "arquivo"){
+    qry += "&arquivo=t"
+  }
+  const resp = await fetch(`${url}${qry}`)
   if (resp.status != 200) return
-
+  
   const data = await resp.json()
   await modalBody(type, title, data)
   await buttonConfig(type, modal, data)
@@ -95,10 +80,13 @@ async function buttonConfig(type, modal, data) {
   else win.btnSalvar.disabled = false
   if (type === 'new') {
     win.btnSalvar.onclick = () => {
+      if (win.markdownArquivo.files[0] == null || win.markdownArquivo.files[0] == undefined) {
+        return showMessage("Selecione um arquivo.", 4, true)
+      }
       fncBackEnd(
         sys.new,
         'post',
-        { 'Content-Type': 'application/json; charset=utf-8' },
+        null,
         bodyConfig(type),
         modal,
         true
@@ -111,7 +99,7 @@ async function buttonConfig(type, modal, data) {
       fncBackEnd(
         sys.update,
         'post',
-        { 'Content-Type': 'application/json; charset=utf-8' },
+        null,
         bodyConfig(type),
         modal,
         true
@@ -131,33 +119,19 @@ async function buttonConfig(type, modal, data) {
       )
     }
   }
-
-  if (type === 'excel') {
-    win.btnUploadModal.onclick = () => {
-      if (win.excelFile.files[0] == null || win.excelFile.files[0] == undefined) {
-        return showMessage("Selecione um arquivo.", 4, true)
-      }
-      const dataAnexo = new FormData()
-      dataAnexo.append('anexo', win.excelFile.files[0])
-
-      fncBackEnd(
-        sys.importExcel,
-        'post',
-        null,
-        dataAnexo,
-        modal,
-        false
-      )
-    }
-  }
 }
 
 //----------------------------------------------------------------------------------------------
 async function modalBody(type, title, data) {
   win.titleModal.innerText = title
   if (type != 'new') {
-    for (const item of mainForm) {
-      win[item.nome].value = data[item.nome]
+    if(type == "arquivo"){
+      win.arquivosModalBody.innerHTML = data.message
+    }else {
+      for (const item of mainForm) {
+        if(item.nome != "markdownArquivo")
+          win[item.nome].value = data[item.nome]
+      }
     }
   }
 }
@@ -165,12 +139,14 @@ async function modalBody(type, title, data) {
 
 //----------------------------------------------------------------------------------------------
 function bodyConfig() {
-  let body = {}
-  for (const item of mainForm) {
-    const itemValue = win[item.nome]
-    body[item.nome] = itemValue.value
-  }
-  return JSON.stringify(body)
+  const dados = {}
+  const dataObj = new FormData()
+  dataObj.append(`markdownArquivo`, win.markdownArquivo.files[0])
+  dados.markdownId = win.markdownId.value
+  dados.markdownTitulo = win.markdownTitulo.value
+  dados.markdownAtivo = win.markdownAtivo.value
+  dataObj.append("dados", JSON.stringify(dados))
+  return dataObj
 }
 
 //----------------------------------------------------------------------------------------------
@@ -190,9 +166,6 @@ async function fncBackEnd(url, method, headers, body, modal, checar) {
     await getMainData()
     await fncSelectRow(selectedId)
     return showMessage("Operação realizada com sucesso.", 4, false)
-  } else if (response.status == 401) {
-    const divErro = document.getElementById('divErrorExcel')
-    if (divErro) divErro.innerHTML = message
   } else return showMessage(message, 4, true)
 
 }
