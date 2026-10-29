@@ -41,7 +41,8 @@ const Conversas = conn.define("conversas", {
   },
   markdownId: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    defaultValue: null,
+    allowNull: true
   },
 }, {
   indexes: [
