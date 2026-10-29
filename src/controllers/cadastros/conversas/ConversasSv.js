@@ -118,7 +118,7 @@ module.exports[sys.new.cmdService] = async (req, res) => {
         // conversaConteudo,
         // conversaResposta,
         usId: sessionObj.sessionUsId,
-        markdownId
+        markdownId: markdownId ? markdownId:null
       }
     )
 
@@ -175,7 +175,7 @@ module.exports[sys.update.cmdService] = async (req, res) => {
       {
         conversaTitulo,
         // conversaConteudo,
-        markdownId
+        markdownId: markdownId ? markdownId:null
       },
       {
         where:{
