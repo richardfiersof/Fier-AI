@@ -35,6 +35,11 @@ const Conversas = conn.define("conversas", {
     defaultValue: "Aberto",
     allowNull: false
   },
+  conversaModelo: {
+    type: Sequelize.STRING(30),
+    defaultValue: "llama3.1",
+    allowNull: false
+  },
   usId: {
     type: Sequelize.INTEGER,
     allowNull: false

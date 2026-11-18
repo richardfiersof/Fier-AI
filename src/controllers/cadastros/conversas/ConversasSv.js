@@ -21,7 +21,7 @@ const logText = "conversas"
 const mainId = "conversaId"
 // Inicializa o cliente apontando para o Docker da Hostinger
 const ollama = new Ollama({ 
-  host: 'http://localhost:32768/' // Altere pelo IP da VPS ou localhost
+  host: "http://localhost:32768/" // Altere pelo IP da VPS ou localhost
 });
 
 module.exports[sys.main.cmdService] = async (req, res) => {
@@ -105,7 +105,8 @@ module.exports[sys.new.cmdService] = async (req, res) => {
   try {
     const sessionObj = await reqRender(req)
     const { 
-      conversaTitulo, 
+      conversaTitulo,
+      conversaModelo,
       // conversaConteudo,
       markdownId
     } = req.body
@@ -115,6 +116,7 @@ module.exports[sys.new.cmdService] = async (req, res) => {
     .create(
       {
         conversaTitulo,
+        conversaModelo,
         // conversaConteudo,
         // conversaResposta,
         usId: sessionObj.sessionUsId,
@@ -165,6 +167,7 @@ module.exports[sys.update.cmdService] = async (req, res) => {
     const {
       conversaId,
       conversaTitulo,
+      conversaModelo,
       // conversaConteudo,
       markdownId
     } = req.body
@@ -174,6 +177,7 @@ module.exports[sys.update.cmdService] = async (req, res) => {
     .update(
       {
         conversaTitulo,
+        conversaModelo,
         // conversaConteudo,
         markdownId: markdownId ? markdownId:null
       },
@@ -215,7 +219,7 @@ module.exports[sys.pergunta.cmdService] = async (req, res) => {
         return await defaultResponseJson(req, res, "ERROR", logText, 500, resp.resp)
       else localArquivo = resp.resp
     }
-    const conversaResposta = await fncGerenciarConteudoIA(conversaConteudo, check[0].markdownId, {localArquivo, extensao})
+    const conversaResposta = await fncGerenciarConteudoIA(conversaConteudo, check[0].markdownId, {localArquivo, extensao}, check.conversaModelo)
 
     const [qry] =
     await Conversas
@@ -280,6 +284,7 @@ module.exports.fncConversasData = async (where = {}, full = false) =>{
       "conversaConteudo",
       "conversaData",
       "conversaStatus",
+      "conversaModelo",
       "markdownId",
     ],
     include:[
@@ -291,37 +296,37 @@ module.exports.fncConversasData = async (where = {}, full = false) =>{
   })
 }
 
-async function fncGerenciarConteudoIA(content, markdownId = null, arquivo = {localArquivo: "", extensao: ""}) {
+async function fncGerenciarConteudoIA(content, markdownId = null, arquivo = {localArquivo: "", extensao: ""}, model) {
   try {
     console.log("Conectando ao Ollama...");
     if(markdownId){
-      const markdownPath = path.join(pathComplete, 'markdown', String(markdownId), `markdown${markdownId}.md`);
-      const markdownBruto = fs.readFileSync(markdownPath, 'utf8');
+      const markdownPath = path.join(pathComplete, "markdown", String(markdownId), `markdown${markdownId}.md`);
+      const markdownBruto = fs.readFileSync(markdownPath, "utf8");
       content = `${content}\n--- MANUAL ---\n${markdownBruto}\n--- FIM DO MANUAL ---\n`
     }
     if(arquivo.localArquivo.length >0){
       if(arquivo.extensao == ".json"){
-        const dadosJsonBruto = fs.readFileSync(arquivo.localArquivo, 'utf8');
+        const dadosJsonBruto = fs.readFileSync(arquivo.localArquivo, "utf8");
         const dadosJson = JSON.parse(dadosJsonBruto);
         content = `${content}\n--- DADOS JSON ---\n${JSON.stringify(dadosJson, null, 2)}\n--- FIM DOS DADOS JSON ---\n`;
         anexoDelete(arquivo.localArquivo)
       }else if ([".csv", ".txt", ".md"].includes(arquivo.extensao)){
-        const dadosTexto = fs.readFileSync(arquivo.localArquivo, 'utf8');
+        const dadosTexto = fs.readFileSync(arquivo.localArquivo, "utf8");
         content = `${content}\n--- DADOS DO ARQUIVO (${arquivo.extensao}) ---\n${dadosTexto}\n--- FIM DOS DADOS ---\n`;
         anexoDelete(arquivo.localArquivo)
       }
     }
-    return await fncPerguntarParaAI(content)
+    return await fncPerguntarParaAI(content, model)
   } catch (error) {
     console.error("Erro ao conectar ou processar:", error);
     throw error;
   }
 }
 
-async function fncPerguntarParaAI(content) {
+async function fncPerguntarParaAI(content, model = "llama3.1") {
   const response = await ollama.chat({
-    model: 'llama3.1', 
-    messages: [{ role: 'user', content }],
+    model, 
+    messages: [{ role: "user", content }],
   });
   return response.message.content
 }

@@ -5,6 +5,11 @@ const prefixURL = "/cadastro/conversas/"
 const prefixServ = "fncConversas"
 const prefixTitle = "Conversas"
 
+const modelos = [
+  {valor: "llama3.1", nome: "llama3.1"},
+  {valor: "glm-5.3-flash", nome: "claude"},
+]
+
 module.exports.sysUrl = {
   main:        `${prefixURL}`,
   showAll:     `${prefixURL}visualizar/todos`,
@@ -12,7 +17,7 @@ module.exports.sysUrl = {
   new:         `${prefixURL}novo`,
   delete:      `${prefixURL}delete`,
   update:      `${prefixURL}update`,
-  pergunta:      `${prefixURL}pergunta`,
+  pergunta:    `${prefixURL}pergunta`,
   start:       `${prefixURL}start`,
 }
 
@@ -119,6 +124,7 @@ module.exports.tableConfig = {
     { title: "Titulo", field: "conversaTitulo", headerFilter: true },
     { title: "Data", field: "conversaData", headerFilter: true },
     { title: "Markdown", field: "markdown.markdownTitulo", headerFilter: true },
+    { title: "Modelo", field: "conversaModelo", headerFilter: true },
     { title: "Status", field: "conversaStatus", headerFilter: true },
   ],
 }
@@ -127,6 +133,7 @@ module.exports.mainForm = [
   { titulo: "Id", nome: "conversaId", type: "input", dataType: "number", atritubos: ["disabled=true"] },
   { titulo: "Titulo", nome: "conversaTitulo", type: "input", dataType: "text", atritubos: ["required=true focus=mainModal"] },
   { titulo: "Markdown", nome: "markdownId", type: "select", opcoes: "", atritubos: [""] },
+  { titulo: "Modelo", nome: "conversaModelo", type: "select", opcoes: modelos, atritubos: ["required=true"] },
   // { titulo: "Conteudo", nome: "conversaConteudo", type: "textarea", atritubos: ["required=true"] },
   // { titulo: "Resposta", nome: "conversaResposta", type: "textarea", atritubos: ["readonly=true"] },
 ]
