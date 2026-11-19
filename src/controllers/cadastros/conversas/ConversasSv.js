@@ -212,21 +212,18 @@ module.exports[sys.pergunta.cmdService] = async (req, res) => {
     const check = await this.fncConversasData({conversaId})
     if(arquivo) {
       extensao = `.${arquivo.name.split(".").pop()}`
-      const resp = await anexoSaveNoDatabase(arquivo, `arquivo${conversaId}`, extensao, `arquivo\\${conversaId}\\`)
+      const resp = await anexoSaveNoDatabase(markdownArquivo, `markdown${qry[mainId]}`, extensao, [`arquivo`, conversaId])
+      
       if(resp.status == 400)
         return await defaultResponseJson(req, res, "ERROR", logText, 400)
       if(resp.status == 500)
         return await defaultResponseJson(req, res, "ERROR", logText, 500, resp.resp)
       else localArquivo = resp.resp
     }
-    const conversaResposta = await fncGerenciarConteudoIA(conversaConteudo, check[0].markdownId, {localArquivo, extensao}, check.conversaModelo)
-
-    const [qry] =
     await Conversas
     .update(
       {
         conversaConteudo,
-        conversaResposta,
       },{
         where:{
           conversaId,
@@ -234,6 +231,19 @@ module.exports[sys.pergunta.cmdService] = async (req, res) => {
         }
       }
     )
+    fncGerenciarConteudoIA(conversaConteudo, check[0].markdownId, {localArquivo, extensao}, check.conversaModelo).then(x=> {
+      Conversas
+      .update(
+        {
+          conversaResposta: x,
+        },{
+          where:{
+            conversaId,
+            usId: sessionObj.sessionUsId
+          }
+        }
+      )
+    })
 
     if (qry>0) 
       return await defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, conversaResposta}  )

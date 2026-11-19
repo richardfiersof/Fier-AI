@@ -2,7 +2,7 @@ const fs = require('fs')
 
 module.exports.extensions = ['.pdf']
 module.exports.extensionsModelo = ['.xlsx', '.xls']
-module.exports.pathComplete = __dirname.split('utilidades')[0].replaceAll('\\', '/') + 'safe-files/'
+module.exports.pathComplete = path.resolve(__dirname, '..', 'safe-files');
 
 module.exports.anexoSave = async (database, databaseName, databaseExt, file, fileName, fileExt, fileFolder, itemId) => {
   try {
@@ -26,17 +26,15 @@ module.exports.anexoSave = async (database, databaseName, databaseExt, file, fil
   }
 }
 
-module.exports.anexoSaveNoDatabase = async (file, fileName, fileExt, fileFolder) => {
+module.exports.anexoSaveNoDatabase = async (file, fileName, fileExt, fileFolder = []) => {
   try {
-    let addFile = false
-    if (!fs.existsSync(`${this.pathComplete}${fileFolder}`))
-      fs.mkdirSync(`${this.pathComplete}${fileFolder}`, { recursive: true })
+    const dir = path.join(this.pathComplete, ...fileFolder.map(String))
+    const fullPath = path.join(dir, `${fileName}${fileExt}`)
 
-    const fullPath = `${this.pathComplete}${fileFolder}${fileName}${fileExt}`
+    await fs.promises.mkdir(dir, { recursive: true })
     await file.mv(fullPath)
 
-    if (fs.existsSync(fullPath)) addFile = true
-    if (addFile) return { error: false, status: 200, resp: fullPath }
+    if (fs.existsSync(fullPath)) return { error: false, status: 200, resp: fullPath }
     return { error: true, status: 400 }
 
   } catch (error) {

@@ -121,7 +121,7 @@ module.exports[sys.new.cmdService] = async (req, res) => {
     )
 
     if (qry) {
-      const resp = await anexoSaveNoDatabase(markdownArquivo, `markdown${qry[mainId]}`, ext, `markdown\\${qry[mainId]}\\`)
+      const resp = await anexoSaveNoDatabase(markdownArquivo, `markdown${qry[mainId]}`, ext, [`markdown`, qry[mainId]])
       if(resp.status == 200)
         return await defaultResponseJson(req, res, "NEW", logText, 201, null, qry[mainId])
       else if (resp.status == 500)
@@ -194,7 +194,7 @@ module.exports[sys.update.cmdService] = async (req, res) => {
 
     if (qry > 0) {
       if(markdownArquivo) {
-        const resp = await anexoSaveNoDatabase(markdownArquivo, `markdown${qry[mainId]}`, ext, `markdown\\${qry[mainId]}\\`)
+        const resp = await anexoSaveNoDatabase(markdownArquivo, `markdown${qry[mainId]}`, ext, [`markdown`, qry[mainId]])
         if(resp.status == 200)
           return await defaultResponseJson(req, res, "UPDATE", logText, 200, null, markdownId )
         else if (resp.status == 500)
