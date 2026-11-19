@@ -1,6 +1,7 @@
 const { Op } = require("sequelize")
 const fs = require("fs")
 const marked = require("marked")
+const path = require("path")
 const {
   sys,
   sysUrl,
@@ -73,7 +74,7 @@ module.exports[sys.show.cmdService] = async (req, res) => {
     const { markdownId } = req.params
 
     if(arquivo){
-      const arquivoBruto = fs.readFileSync(`${pathComplete}markdown\\${markdownId}\\markdown${markdownId}.md`, 'utf8');
+      const arquivoBruto = fs.readFileSync(path.join(pathComplete, "markdown", markdownId, `markdown${markdownId}.md`), 'utf8');
       return await defaultResponseJson(req, res, !log?"ACCESS": null, !log? logText: null, 200, await marked.parse(arquivoBruto) )
     }
 
