@@ -163,6 +163,7 @@ async function modalBody(type, title, data) {
     if(type == "conversa"){
       win.conversaConteudo.value = data.conversaConteudo
       win.conversaResposta.value = data.conversaResposta
+      win.conversaArquivo.value = ""
     }
   }
 }
