@@ -1,5 +1,10 @@
 const mainId = 'conversaId'
-
+const idAtual = null
+const usuario = null
+socket.on('updateChat', (data) => {
+  if(data.usId != paiId) return
+  respostaAI(data)
+})
 //----------------------------------------------------------------------------------------------
 fncSetWinVars().then(async w => {
   win = Object.fromEntries(w)
@@ -16,7 +21,8 @@ async function handleStart() {
     sys = info.sys
     mainForm = info.mainForm
     const baseUrl = `${sys.showAll}?log=false`
-
+    socket.emit('joinChat', info.usId)
+    usuario(info.usId)
     await createTabulator(info.tableConfig)
     await getMainData(baseUrl)
     await btnMainFilter()
@@ -209,4 +215,11 @@ async function fncBackEnd(url, method, headers, body, modal, checar, btn) {
     return showMessage("Operação realizada com sucesso.", 4, false)
   } else return showMessage(message, 4, true)
 
+}
+
+async function respostaAI(data) {
+  if(win.conversaModal.classNma == "modal fade show"){
+    win.conversaResposta.innerHTML = data.conversaResposta
+  }
+  showMessage(`Registro #${data[mainId]}, resposta obitida!`,3,false)
 }

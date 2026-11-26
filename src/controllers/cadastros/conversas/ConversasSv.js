@@ -19,6 +19,7 @@ const Markdown = require("../markdown/Markdown")
 const path = require("path")
 const logText = "conversas"
 const mainId = "conversaId"
+const io = require("../../../server")
 // Inicializa o cliente apontando para o Docker da Hostinger
 const ollama = new Ollama({ 
   host: "http://localhost:32768/" // Altere pelo IP da VPS ou localhost
@@ -244,6 +245,7 @@ module.exports[sys.pergunta.cmdService] = async (req, res) => {
           }
         }
       )
+      io.emit('respostaAI', { conversaId, conversaResposta: x, usId:sessionObj.sessionUsId })
       return defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, x}  )
     })
     return await defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, conversaResposta: "A resposta será gerada em breve!"}  )
@@ -268,7 +270,8 @@ module.exports[sys.start.cmdService] = async (req, res) => {
         tableConfig,
         mainForm,
         mainBtns,
-        markdowns
+        markdowns,
+        usId
       }
     )
 
