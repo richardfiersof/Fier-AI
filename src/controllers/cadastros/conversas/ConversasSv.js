@@ -246,6 +246,7 @@ module.exports[sys.pergunta.cmdService] = async (req, res) => {
       )
       return defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, x}  )
     })
+    return await defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, conversaResposta: "A resposta será gerada em breve!"}  )
 
     return await defaultResponseJson(req, res, "ERROR", logText, 400)
 
