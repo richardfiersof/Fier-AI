@@ -220,6 +220,7 @@ module.exports[sys.pergunta.cmdService] = async (req, res) => {
         return await defaultResponseJson(req, res, "ERROR", logText, 500, resp.resp)
       else localArquivo = resp.resp
     }
+    const [qry] =
     await Conversas
     .update(
       {
