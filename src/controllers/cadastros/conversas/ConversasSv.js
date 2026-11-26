@@ -259,7 +259,7 @@ module.exports[sys.pergunta.cmdService] = async (req, res) => {
 
 module.exports[sys.start.cmdService] = async (req, res) => {
   try {
-
+    const sessionObj = await reqRender(req)
     const markdowns = await fncMarkdownData({markdownAtivo:1})
 
     return res
@@ -271,7 +271,7 @@ module.exports[sys.start.cmdService] = async (req, res) => {
         mainForm,
         mainBtns,
         markdowns,
-        usId
+        usId: sessionObj.sessionUsId
       }
     )
 
