@@ -244,10 +244,9 @@ module.exports[sys.pergunta.cmdService] = async (req, res) => {
           }
         }
       )
+      return defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, x}  )
     })
 
-    if (qry>0) 
-      return await defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, conversaResposta}  )
     return await defaultResponseJson(req, res, "ERROR", logText, 400)
 
   } catch (error) {
