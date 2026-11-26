@@ -22,7 +22,6 @@ async function handleStart() {
     mainForm = info.mainForm
     const baseUrl = `${sys.showAll}?log=false`
     socket.emit('joinChat', info.usId)
-    usuario(info.usId)
     await createTabulator(info.tableConfig)
     await getMainData(baseUrl)
     await btnMainFilter()
