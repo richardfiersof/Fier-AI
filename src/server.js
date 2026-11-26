@@ -69,12 +69,7 @@ conn.authenticate().then(async () => {
         })
 
         socket.on('joinChat', (usId) => {
-          socket.join(usId)
-        })
-
-        socket.on('respostaAI', (data) => {
-          // mensagemTexto, grupoMensagemId, usId, usNomeCompleto, messageData, messageHora
-          io.to(data.usId).emit('updateChat', data)
+          socket.join(`us${usId}`)
         })
 
       } catch (error) {

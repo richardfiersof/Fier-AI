@@ -245,11 +245,14 @@ module.exports[sys.pergunta.cmdService] = async (req, res) => {
           }
         }
       )
-      io.emit('respostaAI', { conversaId, conversaResposta: x, usId:sessionObj.sessionUsId })
-      return defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, x}  )
+      io.to(`us${sessionObj.sessionUsId}`).emit('updateChat', {
+        conversaId,
+        conversaResposta: x,
+        usId: sessionObj.sessionUsId
+      })
     })
-    return await defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, conversaResposta: "A resposta será gerada em breve!"}  )
-
+    if(qry > 0)
+      return await defaultResponseJson(req, res, "UPDATE", logText, 200, null, {conversaId, conversaResposta: "A resposta será gerada em breve!"}  )
     return await defaultResponseJson(req, res, "ERROR", logText, 400)
 
   } catch (error) {

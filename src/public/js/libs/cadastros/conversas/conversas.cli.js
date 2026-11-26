@@ -1,8 +1,7 @@
 const mainId = 'conversaId'
-const idAtual = null
-const usuario = null
+let usuario = null
 socket.on('updateChat', (data) => {
-  if(data.usId != paiId) return
+  if(data.usId != usuario) return
   respostaAI(data)
 })
 //----------------------------------------------------------------------------------------------
@@ -21,7 +20,8 @@ async function handleStart() {
     sys = info.sys
     mainForm = info.mainForm
     const baseUrl = `${sys.showAll}?log=false`
-    socket.emit('joinChat', info.usId)
+    usuario = info.usId
+    socket.emit('joinChat', usuario)
     await createTabulator(info.tableConfig)
     await getMainData(baseUrl)
     await btnMainFilter()
@@ -217,8 +217,8 @@ async function fncBackEnd(url, method, headers, body, modal, checar, btn) {
 }
 
 async function respostaAI(data) {
-  if(win.conversaModal.classNma == "modal fade show"){
-    win.conversaResposta.innerHTML = data.conversaResposta
+  if(win.conversaModal.className == "modal fade show" && data[mainId] == win[mainId].value){
+    win.conversaResposta.value = data.conversaResposta
   }
-  showMessage(`Registro #${data[mainId]}, resposta obitida!`,3,false)
+  showMessage(`Registro #${data[mainId]}, resposta obitida!`,5,"alert")
 }
