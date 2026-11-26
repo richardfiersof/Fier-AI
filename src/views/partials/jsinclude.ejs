@@ -1,5 +1,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
+	const socket = io()
+
 	function showMessageGeral(infoShow, seconds, isError) {
 		try {
 
@@ -31,7 +33,6 @@
 		return
 	}
 	if('<%= locals.usNome _%>'.length >0 ){
-		const socket = io()
 		socket.emit('using','<%= usNome _%>', window.location)
 		const sectionAvisos = document.getElementById('sectionAvisos')
 		if(sectionAvisos){
