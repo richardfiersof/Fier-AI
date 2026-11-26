@@ -1,6 +1,5 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
-
 	function showMessageGeral(infoShow, seconds, isError) {
 		try {
 
@@ -32,14 +31,14 @@
 		return
 	}
 	if('<%= locals.usNome _%>'.length >0 ){
-		const asyncComunicationModule = io()
-		asyncComunicationModule.emit('using','<%= usNome _%>', window.location)
+		const socket = io()
+		socket.emit('using','<%= usNome _%>', window.location)
 		const sectionAvisos = document.getElementById('sectionAvisos')
 		if(sectionAvisos){
 			checkAvisos()
 		}
 		if(!document.getElementById("formlogin")){
-			asyncComunicationModule.on('servidor_reiniciado', (data) => {
+			socket.on('servidor_reiniciado', (data) => {
 				checkSessionAndRedirect();
 			});
 		}
